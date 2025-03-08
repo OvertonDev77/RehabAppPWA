@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model NationalDirectory {
+  id                                     Int       @id @default(autoincrement())
+  name1                                  String
+  name2                                  String?
+  street1                                String?
+  street2                                String?
+  city                                   String?
+  state                                  String?
+  zip                                    String?
+  phone                                  String?
+  intake1                                String?
+  intake2                                String?
+  intake1a                               String?
+  intake2a                               String?
+  service_code_info                      String?
+  service_codes                          String?
+  service_names                          String?
+  npi                                    String?   @unique
+  provider_first_name                    String?
+  provider_last_name                     String?
+  mailing_address                        String?
+  last_update                            DateTime?
+  health_care_provider_taxonomy_code_one String?
+  health_care_provider_taxonomy_code_two String?
+  in_network                             Boolean?
+}
+
+model Payer {
+  payer_code   String  @id
+  payer_name   String
+  type         String
+  eligibility  String
+  claim_status String
+  column1      String?
+  state        String?
+}
+
+model AllRehabs {
+  id                                     Int       @id @default(autoincrement())
+  name1                                  String?
+  name2                                  String?
+  street1                                String?
+  street2                                String?
+  city                                   String?
+  state                                  String?
+  zip                                    String?
+  phone                                  String?
+  service_code_info                      String?
+  service_codes                          String?
+  service_names                          String?
+  npi                                    String?
+  provider_first_name                    String?
+  provider_last_name                     String?
+  mailing_address                        String?
+  last_update                            DateTime? @db.Date
+  health_care_provider_taxonomy_code_one String?
+  health_care_provider_taxonomy_code_two String?
+}
+
+model ServiceCodes {
+  id                Int    @id @default(autoincrement())
+  number_identifier String @db.VarChar(10)
+  name              String
+  unique_identifier String @unique @db.VarChar(10)
+}
