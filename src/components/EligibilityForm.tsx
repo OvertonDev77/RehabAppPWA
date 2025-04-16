@@ -1,12 +1,11 @@
 "use client";
 import { useState } from "react";
-import { usePayerRehab } from "../../hooks/usePayersAndRehabs";
+import { useRehabs, usePayers } from "../../hooks/usePayersAndRehabs";
 import {
   submitEligibilityInquiry,
   getEligibilityResponse,
 } from "../../pVerifyUtilities/pVerifyApiUtilities";
 
-// List of all 50 US states
 const US_STATES = [
   "AL",
   "AK",
@@ -61,14 +60,22 @@ const US_STATES = [
 ];
 
 export default function EligibilityForm() {
-  const { payers, rehabs, filteredRehabs, setFilter } = usePayerRehab();
+  const [isFiltered, setIsFiltered] = useState(false);
+  const [filters, setFilters] = useState({ state: "" });
   const [useCustomPayer, setUseCustomPayer] = useState(false);
   const [useCustomProvider, setUseCustomProvider] = useState(false);
-  const [selectedState, setSelectedState] = useState(""); // State filter
-  const [isFiltered, setIsFiltered] = useState(false);
-  const [zip, setZip] = useState(""); // Zip filter
+  const [useCustomSubscriber, setUseCustomSubscriber] = useState(true);
+  const [selectedRehab, setSelectedRehab] = useState(null);
+
+  // Apollo queries
+  const { data: rehabData, loading: rehabsLoading } = useRehabs(
+    isFiltered ? filters : {}
+  );
+  const { data: payerData, loading: payersLoading } = usePayers();
+
   const [formData, setFormData] = useState({
     payerCode: "",
+    payerName: "",
     selectedRehabId: "",
     customProviderFirstName: "",
     customProviderLastName: "",
@@ -85,25 +92,33 @@ export default function EligibilityForm() {
   const [loading, setLoading] = useState(false);
   const [eligibilityResult, setEligibilityResult] = useState(null);
 
-  // Function to update filter state
-  const handleFilterChange = () => {
-    const newFilter = {};
-    if (selectedState) newFilter.state = selectedState;
-    if (zip) newFilter.zip = zip;
-    setFilter(newFilter);
-  };
-
-  // State change handler
   const handleStateChange = (e) => {
-    setSelectedState(e.target.value);
-    setFilter((curr) => ({ ...curr, state: e.target.value }));
-    handleFilterChange();
+    setFilters((prev) => ({ ...prev, state: e.target.value }));
   };
 
-  // Zip change handler
-  const handleZipChange = (e) => {
-    setZip(e.target.value);
-    handleFilterChange();
+  const handlePayerChange = (e) => {
+    const { value } = e.target;
+    const selectedPayer = payerData?.payers.find((p) => p.payer_code === value);
+
+    setFormData((prev) => ({
+      ...prev,
+      payerCode: value,
+      payerName: selectedPayer?.payer_name || "",
+    }));
+  };
+
+  const handleRehabChange = (e) => {
+    const { value } = e.target;
+    const rehab = rehabData?.rehabs.find((r) => r.id === parseInt(value));
+
+    setSelectedRehab(rehab);
+    setFormData((prev) => ({
+      ...prev,
+      selectedRehabId: value,
+      customProviderFirstName: rehab?.provider_first_name || "",
+      customProviderLastName: rehab?.provider_last_name || "",
+      customProviderNpi: rehab?.npi || "",
+    }));
   };
 
   const handleChange = (e) => {
@@ -115,13 +130,13 @@ export default function EligibilityForm() {
     e.preventDefault();
     setLoading(true);
 
-    // Get selected rehab details or use custom provider details
-    const selectedRehab = rehabs.find(
+    const selectedRehab = rehabData?.rehabs.find(
       (r) => r.id === parseInt(formData.selectedRehabId)
     );
 
     const requestData = {
       payerCode: formData.payerCode,
+      payerName: formData.payerName || "",
       provider: {
         firstName: useCustomProvider
           ? formData.customProviderFirstName
@@ -133,7 +148,6 @@ export default function EligibilityForm() {
         npi: useCustomProvider
           ? formData.customProviderNpi
           : selectedRehab?.npi || "",
-        pin: "00000",
       },
       subscriber: {
         firstName: formData.subscriberFirstName,
@@ -142,39 +156,39 @@ export default function EligibilityForm() {
         dob: formData.subscriberDob,
         memberID: formData.subscriberMemberID,
       },
-      dependent: {
-        patient: {
-          firstName: "",
-          middleName: "",
-          lastName: "",
-          dob: "",
-          gender: "",
-        },
-        relationWithSubscriber: "",
-      },
-      isSubscriberPatient: true,
+      dependent: null, // Must be explicitly null
+      isSubscriberPatient: "True",
       doS_StartDate: formData.doS_StartDate,
       doS_EndDate: formData.doS_EndDate,
-      serviceCodes: ["30"],
-      isHMOplan: true,
-      IncludeTextResponse: true,
+      PracticeTypeCode: "",
       referenceId: formData.referenceId,
       Location: useCustomProvider
         ? `${formData.customProviderFirstName} ${formData.customProviderLastName}`
         : selectedRehab?.name1 || "",
+      IncludeTextResponse: "true",
+      InternalId: "",
+      CustomerID: "",
     };
+
+    console.log("Submitting request:", requestData); // Debugging
 
     const requestId = await submitEligibilityInquiry(requestData);
     if (requestId) {
       const response = await getEligibilityResponse(requestId);
+      console.log("RESPONSE-------------------------\n\n");
+      console.log({ response });
       setEligibilityResult(response);
     }
     setLoading(false);
   };
 
+  if (rehabsLoading || payersLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg">
-      {/* FILTER SECTION */}
+      {/* Filter Controls */}
       <div className="mb-4">
         <label className="flex items-center mb-2">
           <input
@@ -188,7 +202,7 @@ export default function EligibilityForm() {
 
         {isFiltered && (
           <select
-            value={selectedState}
+            value={filters.state}
             onChange={handleStateChange}
             className="block w-full p-2 border"
           >
@@ -202,40 +216,40 @@ export default function EligibilityForm() {
         )}
       </div>
 
-      <div className="mb-4">
-        <label className="block text-sm font-medium">Filter by Zip Code</label>
-        <input
-          type="text"
-          value={zip}
-          onChange={handleZipChange}
-          placeholder="Enter Zip Code"
-          className="block w-full p-2 border"
-        />
-      </div>
-
-      {/* FORM SECTION */}
+      {/* Form Section */}
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Payer Selection */}
         {useCustomPayer ? (
-          <input
-            type="text"
-            name="payerCode"
-            placeholder="Enter Payer Code"
-            value={formData.payerCode}
-            onChange={handleChange}
-            className="block w-full p-2 border"
-            required
-          />
+          <>
+            <input
+              type="text"
+              name="payerCode"
+              placeholder="Enter Payer Code"
+              value={formData.payerCode}
+              onChange={handlePayerChange}
+              className="block w-full p-2 border"
+              required
+            />
+            <input
+              type="text"
+              name="payerName"
+              placeholder="Enter Payer Name"
+              value={formData.payerName}
+              onChange={handleChange}
+              className="block w-full p-2 border"
+              required
+            />
+          </>
         ) : (
           <select
             name="payerCode"
             value={formData.payerCode}
-            onChange={handleChange}
+            onChange={handlePayerChange}
             className="block w-full p-2 border"
             required
           >
             <option value="">Select Payer</option>
-            {payers.map((payer) => (
+            {payerData?.payers.map((payer) => (
               <option key={payer.payer_code} value={payer.payer_code}>
                 {payer.payer_name}
               </option>
@@ -249,7 +263,7 @@ export default function EligibilityForm() {
             onChange={() => setUseCustomPayer(!useCustomPayer)}
             className="mr-2"
           />
-          Enter Payer Code Manually
+          Enter Payer Details Manually
         </label>
 
         {/* Provider Selection */}
@@ -298,12 +312,12 @@ export default function EligibilityForm() {
             <select
               name="selectedRehabId"
               value={formData.selectedRehabId}
-              onChange={handleChange}
+              onChange={handleRehabChange}
               className="block w-full p-2 border"
               required
             >
               <option value="">Select Provider/Facility</option>
-              {(isFiltered ? filteredRehabs : rehabs).map((rehab) => (
+              {rehabData?.rehabs.map((rehab) => (
                 <option key={rehab.id} value={rehab.id}>
                   {rehab.name1} - {rehab.city}, {rehab.state}
                 </option>
@@ -326,6 +340,45 @@ export default function EligibilityForm() {
             type="date"
             name="doS_EndDate"
             value={formData.doS_EndDate}
+            onChange={handleChange}
+            className="block w-full p-2 border"
+            required
+          />
+        </div>
+
+        {/* Subscriber Information */}
+        <div className="space-y-2">
+          <input
+            type="text"
+            name="subscriberFirstName"
+            placeholder="Subscriber First Name"
+            value={formData.subscriberFirstName}
+            onChange={handleChange}
+            className="block w-full p-2 border"
+            required
+          />
+          <input
+            type="text"
+            name="subscriberLastName"
+            placeholder="Subscriber Last Name"
+            value={formData.subscriberLastName}
+            onChange={handleChange}
+            className="block w-full p-2 border"
+            required
+          />
+          <input
+            type="date"
+            name="subscriberDob"
+            value={formData.subscriberDob}
+            onChange={handleChange}
+            className="block w-full p-2 border"
+            required
+          />
+          <input
+            type="text"
+            name="subscriberMemberID"
+            placeholder="Subscriber Member ID"
+            value={formData.subscriberMemberID}
             onChange={handleChange}
             className="block w-full p-2 border"
             required

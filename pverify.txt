@@ -1,0 +1,1 @@
+curl --location --request POST 'https://api.pverify.com/Token'   --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'Client_Id=523c1e0e-9e04-49a3-853b-c35f310b28d5' --data-urlencode 'Client_Secret=zvl2HyIHwFdglBqYSkVEmyBk8opAYw' --data-urlencode 'grant_type=client_credentials'

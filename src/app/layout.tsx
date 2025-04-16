@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { PayerRehabProvider } from "../../hooks/usePayersAndRehabs";
+import { ApolloWrapper } from "../providers/ApolloProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,13 +26,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <PayerRehabProvider>
+      <ApolloWrapper>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           {children}
         </body>
-      </PayerRehabProvider>
+      </ApolloWrapper>
     </html>
   );
 }

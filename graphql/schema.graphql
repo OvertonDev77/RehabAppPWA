@@ -1,0 +1,72 @@
+type AllRehabs {
+  id: Int!
+  name1: String
+  name2: String
+  street1: String
+  street2: String
+  city: String
+  state: String
+  zip: String
+  phone: String
+  service_code_info: String
+  service_codes: String
+  service_names: String
+  npi: String
+  provider_first_name: String
+  provider_last_name: String
+  mailing_address: String
+  last_update: String
+  health_care_provider_taxonomy_code_one: String
+  health_care_provider_taxonomy_code_two: String
+}
+
+input RehabFilters {
+  city: String
+  state: String
+  mailing_address: String
+  name1: String
+  name2: String
+  phone: String
+  service_names: String
+  service_codes: String
+} 
+
+type Payer {
+  payer_code: String!
+  payer_name: String!
+  type: String!
+  eligibility: String!
+  claim_status: String!
+  column1: String
+  state: String
+}
+
+type ServiceCode {
+  id: Int!
+  number_identifier: String!
+  name: String!
+  unique_identifier: String!
+}
+
+input PayerFilters {
+  payer_code: String
+  payer_name: String
+  type: String
+  state: String
+}
+
+input ServiceCodeFilters {
+  number_identifier: String
+  name: String
+  unique_identifier: String
+}
+
+type Query {
+  rehabs(filters: RehabFilters): [AllRehabs!]!
+  rehab(id: Int!): AllRehabs
+  payers(filters: PayerFilters): [Payer!]!
+  payer(payer_code: String!): Payer
+  serviceCodes(filters: ServiceCodeFilters): [ServiceCode!]!
+  serviceCode(id: Int!): ServiceCode
+}
+
