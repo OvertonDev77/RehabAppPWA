@@ -72,3 +72,130 @@ model ServiceCodes {
   name              String
   unique_identifier String @unique @db.VarChar(10)
 }
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model Prototype_Rehabs {
+  id                                     BigInt?
+  name1                                  String?
+  name2                                  String?
+  street1                                String?
+  street2                                String?
+  city                                   String?
+  state                                  String?
+  zip                                    String?
+  phone                                  String?
+  service_code_info                      String?
+  service_codes                          String?
+  service_names                          String?
+  npi                                    String?
+  provider_first_name                    String?
+  provider_last_name                     String?
+  mailing_address                        String?
+  last_update                            DateTime? @db.Date
+  health_care_provider_taxonomy_code_one String?
+  health_care_provider_taxonomy_code_two String?
+  has_wifi                               Boolean?
+  pet_friendly                           Boolean?
+  family_visitation_allowed              Boolean?
+  transportation_services                Boolean?
+  accepts_insurance                      Boolean?
+  accepts_medicaid                       Boolean?
+  gender_specific                        String?
+  age_group                              String?
+  wheelchair_accessible                  Boolean?
+  spiritual_programs                     Boolean?
+  holistic_treatments                    Boolean?
+  aftercare_support                      Boolean?
+  alumni_program                         Boolean?
+  smoking_allowed                        Boolean?
+  outdoor_activities                     Boolean?
+  recreational_therapy                   Boolean?
+  art_therapy                            Boolean?
+  music_therapy                          Boolean?
+  equine_therapy                         Boolean?
+  staff_to_patient_ratio                 Float?
+  years_in_operation                     BigInt?
+  accreditation                          String?
+  licensed_therapists_count              BigInt?
+  average_rating                         Float?
+  number_of_reviews                      BigInt?
+  testimonials                           String?
+  virtual_tour_url                       String?
+  photos                                 String?
+  program_details                        String?
+  cost_and_payment                       String?
+  objective_summary                      String?
+  subjective_summary                     String?
+  comfort_score                          Float?
+  nutrition_score                        Float?
+  offers_suboxone                        Boolean?
+  offers_mat                             String?
+  has_outings                            Boolean?
+  offers_MAT                             Boolean?
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model public__Prototype_Rehabs_ {
+  id                                     BigInt?
+  name1                                  String?
+  name2                                  String?
+  street1                                String?
+  street2                                String?
+  city                                   String?
+  state                                  String?
+  zip                                    String?
+  phone                                  String?
+  service_code_info                      String?
+  service_codes                          String?
+  service_names                          String?
+  npi                                    String?
+  provider_first_name                    String?
+  provider_last_name                     String?
+  mailing_address                        String?
+  last_update                            DateTime? @db.Date
+  health_care_provider_taxonomy_code_one String?
+  health_care_provider_taxonomy_code_two String?
+  has_wifi                               Boolean?
+  pet_friendly                           Boolean?
+  family_visitation_allowed              Boolean?
+  transportation_services                Boolean?
+  accepts_insurance                      Boolean?
+  accepts_medicaid                       Boolean?
+  gender_specific                        String?
+  age_group                              String?
+  wheelchair_accessible                  Boolean?
+  spiritual_programs                     Boolean?
+  holistic_treatments                    Boolean?
+  aftercare_support                      Boolean?
+  alumni_program                         Boolean?
+  smoking_allowed                        Boolean?
+  outdoor_activities                     Boolean?
+  recreational_therapy                   Boolean?
+  art_therapy                            Boolean?
+  music_therapy                          Boolean?
+  equine_therapy                         Boolean?
+  staff_to_patient_ratio                 Float?
+  years_in_operation                     BigInt?
+  accreditation                          String?
+  licensed_therapists_count              BigInt?
+  average_rating                         Float?
+  number_of_reviews                      BigInt?
+  testimonials                           String?
+  virtual_tour_url                       String?
+  photos                                 String?
+  program_details                        String?
+  cost_and_payment                       String?
+  objective_summary                      String?
+  subjective_summary                     String?
+  comfort_score                          Float?
+  nutrition_score                        Float?
+  offers_suboxone                        Boolean?
+  offers_mat                             String?
+  has_outings                            Boolean?
+  offers_MAT                             Boolean?
+
+  @@map("public.\"Prototype_Rehabs\"")
+  @@ignore
+}
