@@ -75,7 +75,7 @@ model ServiceCodes {
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model Prototype_Rehabs {
-  id                                     BigInt?
+  id                                     Int      @id @default(autoincrement())
   name1                                  String?
   name2                                  String?
   street1                                String?
@@ -114,11 +114,11 @@ model Prototype_Rehabs {
   music_therapy                          Boolean?
   equine_therapy                         Boolean?
   staff_to_patient_ratio                 Float?
-  years_in_operation                     BigInt?
+  years_in_operation                     Int?
   accreditation                          String?
-  licensed_therapists_count              BigInt?
+  licensed_therapists_count              Int?
   average_rating                         Float?
-  number_of_reviews                      BigInt?
+  number_of_reviews                      Int?
   testimonials                           String?
   virtual_tour_url                       String?
   photos                                 String?
@@ -133,7 +133,7 @@ model Prototype_Rehabs {
   has_outings                            Boolean?
   offers_MAT                             Boolean?
 
-  @@ignore
+  @@map("Prototype_Rehabs")
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
@@ -196,6 +196,6 @@ model public__Prototype_Rehabs_ {
   has_outings                            Boolean?
   offers_MAT                             Boolean?
 
-  @@map("public.\"Prototype_Rehabs\"")
+  
   @@ignore
 }

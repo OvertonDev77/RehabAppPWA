@@ -9,6 +9,7 @@ const client = new ApolloClient({
       fetchPolicy: "network-only", // or 'cache-and-network' if you want caching
     },
   },
+  connectToDevTools: true,
 });
 
 export function ApolloWrapper({ children }: { children: React.ReactNode }) {

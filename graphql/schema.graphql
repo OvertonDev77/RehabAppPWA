@@ -1,4 +1,4 @@
-type AllRehabs {
+type PrototypeRehab {
   id: Int!
   name1: String
   name2: String
@@ -18,55 +18,87 @@ type AllRehabs {
   last_update: String
   health_care_provider_taxonomy_code_one: String
   health_care_provider_taxonomy_code_two: String
+  has_wifi: Boolean
+  pet_friendly: Boolean
+  family_visitation_allowed: Boolean
+  transportation_services: Boolean
+  accepts_insurance: Boolean
+  accepts_medicaid: Boolean
+  gender_specific: String
+  age_group: String
+  wheelchair_accessible: Boolean
+  spiritual_programs: Boolean
+  holistic_treatments: Boolean
+  aftercare_support: Boolean
+  alumni_program: Boolean
+  smoking_allowed: Boolean
+  outdoor_activities: Boolean
+  recreational_therapy: Boolean
+  art_therapy: Boolean
+  music_therapy: Boolean
+  equine_therapy: Boolean
+  staff_to_patient_ratio: Float
+  years_in_operation: Int
+  accreditation: String
+  licensed_therapists_count: Int
+  average_rating: Float
+  number_of_reviews: Int
+  testimonials: String
+  virtual_tour_url: String
+  photos: String
+  program_details: String
+  cost_and_payment: String
+  objective_summary: String
+  subjective_summary: String
+  comfort_score: Float
+  nutrition_score: Float
+  offers_suboxone: Boolean
+  offers_mat: String
+  has_outings: Boolean
+  offers_MAT: Boolean
 }
 
-input RehabFilters {
-  city: String
-  state: String
-  mailing_address: String
-  name1: String
-  name2: String
-  phone: String
-  service_names: String
-  service_codes: String
-} 
-
-type Payer {
-  payer_code: String!
-  payer_name: String!
-  type: String!
-  eligibility: String!
-  claim_status: String!
-  column1: String
-  state: String
+input PaginationInput {
+  offset: Int
+  limit: Int
 }
 
-type ServiceCode {
-  id: Int!
-  number_identifier: String!
-  name: String!
-  unique_identifier: String!
+input AdminRehabFilters {
+  name1s: [String!]
+  zips: [String!]
+  cities: [String!]
+  states: [String!]
+  npis: [String!]
+  pagination: PaginationInput
 }
 
-input PayerFilters {
-  payer_code: String
-  payer_name: String
-  type: String
-  state: String
-}
-
-input ServiceCodeFilters {
-  number_identifier: String
-  name: String
-  unique_identifier: String
+input PrototypeRehabFilters {
+  name1s: [String!]
+  npis: [String!]
+  has_wifi: Boolean
+  pet_friendly: Boolean
+  family_visitation_allowed: Boolean
+  transportation_services: Boolean
+  accepts_insurance: Boolean
+  accepts_medicaid: Boolean
+  wheelchair_accessible: Boolean
+  spiritual_programs: Boolean
+  holistic_treatments: Boolean
+  aftercare_support: Boolean
+  alumni_program: Boolean
+  smoking_allowed: Boolean
+  outdoor_activities: Boolean
+  recreational_therapy: Boolean
+  art_therapy: Boolean
+  music_therapy: Boolean
+  equine_therapy: Boolean
+  offers_suboxone: Boolean
+  has_outings: Boolean
+  offers_MAT: Boolean
+  pagination: PaginationInput
 }
 
 type Query {
-  rehabs(filters: RehabFilters): [AllRehabs!]!
-  rehab(id: Int!): AllRehabs
-  payers(filters: PayerFilters): [Payer!]!
-  payer(payer_code: String!): Payer
-  serviceCodes(filters: ServiceCodeFilters): [ServiceCode!]!
-  serviceCode(id: Int!): ServiceCode
+  adminRehabs(filters: AdminRehabFilters): [PrototypeRehab!]!
+  prototypeRehabs(filters: PrototypeRehabFilters): [PrototypeRehab!]!
 }
-
