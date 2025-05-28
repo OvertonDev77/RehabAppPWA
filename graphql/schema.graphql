@@ -58,6 +58,16 @@ type PrototypeRehab {
   offers_MAT: Boolean
 }
 
+type Payer {
+  payer_code: String!
+  payer_name: String!
+  type: String!
+  eligibility: String!
+  claim_status: String!
+  column1: String
+  state: String
+}
+
 input PaginationInput {
   offset: Int
   limit: Int
@@ -98,7 +108,16 @@ input PrototypeRehabFilters {
   pagination: PaginationInput
 }
 
+input PayerFilterInput {
+  payer_code: String
+  payer_name: String
+  payer: String
+  id: String
+}
+
 type Query {
   adminRehabs(filters: AdminRehabFilters): [PrototypeRehab!]!
   prototypeRehabs(filters: PrototypeRehabFilters): [PrototypeRehab!]!
+  allPayers: [Payer!]!
+  payer(filter: PayerFilterInput!): Payer
 }

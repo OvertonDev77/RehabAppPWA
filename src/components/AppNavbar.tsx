@@ -126,10 +126,10 @@ const NAV_LINKS = [
 ];
 
 interface AppNavbarProps {
-  isSidebarOpen: boolean;
+  isSidebarOpen?: boolean;
 }
 
-export function AppNavbar({ isSidebarOpen }: AppNavbarProps) {
+export function AppNavbar({ isSidebarOpen = false }: AppNavbarProps) {
   return (
     <nav className="w-full border-b bg-background">
       <div className="container mx-auto flex items-center justify-end h-16 pr-8">

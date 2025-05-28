@@ -1,0 +1,922 @@
+{
+  "elgRequestID": 15819671,
+  "ediErrorMessage": null,
+  "followUpAction": "",
+  "possibleResolution": "",
+  "verificationStatus": "Processed",
+  "verificationMessage": null,
+  "isPayerBackOffice": "FALSE",
+  "status": "Active",
+  "payerName": "UNITEDHEALTHCARE",
+  "verificationType": "Subscriber Verification",
+  "errorCode": null,
+  "errorDescription": null,
+  "processedWithError": false,
+  "dos": "01/24/2018 - 01/24/2018",
+  "plan": "CHOICE PLUS",
+  "isHMOPlan": false,
+  "exceptionNotes": "",
+  "additionalInformation": "",
+  "otherMessage": null,
+  "reportURL": "https://www.pverify.com/PremiumAccount/ViewDetailsForRecord?elgID=buPMYsPBBDTU6FD8LVqccw~~",
+  "recursiveRequestId": 0,
+  "recursiveAPIResponseCode": null,
+  "recursiveAPIResponseMessage": null,
+  "recursiveProcessedWithError": false,
+  "detailsURL": null,
+  "internalId": null,
+  "customerId": null,
+  "referenceId": null,
+  "notes": null,
+  "location": null,
+  "eligibilityPeriod": {
+    "label": null,
+    "effectiveFromDate": "01/01/2018",
+    "expiredOnDate": ""
+  },
+  "demographicInfo": {
+    "subscriber": {
+      "address1": "806 FAWNWAY",
+      "address2": "",
+      "city": "SAN ANTONIO",
+      "communicationNumber": null,
+      "date": null,
+      "doB_R": "04/29/1964",
+      "firstname": "John",
+      "gender_R": "",
+      "identification": [
+        {
+          "code": " Deo",
+          "type": "Lastname_R ",
+          "name": null
+        },
+        {
+          "code": " John",
+          "type": "Firstname ",
+          "name": null
+        },
+        {
+          "code": "03xxxxxxx",
+          "type": "Member ID",
+          "name": null
+        }
+      ],
+      "lastname_R": "Deo",
+      "middlename": "W",
+      "state": "TX",
+      "suffix": null,
+      "zip": "78260",
+      "militaryPersonnelInfo": null,
+      "fullName": "John Deo"
+    },
+    "dependent": null
+  },
+  "networkSections": [
+    {
+      "identifier": "primary care",
+      "label": "Primary Care",
+      "inNetworkParameters": [
+        {
+          "key": "Co-Pay",
+          "value": "0.00",
+          "message": null,
+          "otherInfo": null
+        },
+        {
+          "key": "Co-Ins",
+          "value": "20%",
+          "message": null,
+          "otherInfo": null
+        }
+      ],
+      "outNetworkParameters": null
+    },
+    {
+      "identifier": "Specialist",
+      "label": "Specialist",
+      "inNetworkParameters": [
+        {
+          "key": "Co-Ins",
+          "value": "20%",
+          "message": null,
+          "otherInfo": null
+        }
+      ],
+      "outNetworkParameters": null
+    },
+    {
+      "identifier": "Deductible",
+      "label": "Deductible",
+      "inNetworkParameters": [
+        {
+          "key": "Annual",
+          "value": "2700.00",
+          "message": null,
+          "otherInfo": null
+        },
+        {
+          "key": "Met",
+          "value": "381.76",
+          "message": null,
+          "otherInfo": null
+        },
+        {
+          "key": "Remaining",
+          "value": "2318.24",
+          "message": null,
+          "otherInfo": null
+        }
+      ],
+      "outNetworkParameters": [
+        {
+          "key": "Annual",
+          "value": "5400.00",
+          "message": null,
+          "otherInfo": null
+        },
+        {
+          "key": "Met",
+          "value": "0.00",
+          "message": null,
+          "otherInfo": null
+        },
+        {
+          "key": "Remaining",
+          "value": "5400.00",
+          "message": null,
+          "otherInfo": null
+        }
+      ]
+    }
+  ],
+  "healthBenefitPlanCoverageServiceType": {
+    "serviceTypeName": "Health Benefit Plan Coverage",
+    "serviceTypeSections": [
+      {
+        "label": "",
+        "serviceParameters": [
+          {
+            "key": "Active Coverage Commercial CHOICE PLUS ",
+            "value": null,
+            "message": null,
+            "otherInfo": null
+          }
+        ]
+      },
+      {
+        "label": "In Plan-Network Status",
+        "serviceParameters": [
+          {
+            "key": "Family Calendar Year Deductible \n",
+            "value": "$2700",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Family Year to Date Deductible \n",
+            "value": "$397.95",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Individual Calendar Year Deductible \n",
+            "value": "$2700",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Individual Year to Date Deductible \n",
+            "value": "$381.76",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Family Remaining Deductible \n",
+            "value": "$2302.05",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Individual Remaining Deductible \n",
+            "value": "$2318.24",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Family Calendar Year Out of Pocket Commercial \n",
+            "value": "$5000",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Individual Calendar Year Out of Pocket Commercial \n",
+            "value": "$2500",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Individual Remaining Out of Pocket Commercial \n",
+            "value": "$2500",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Family Remaining Out of Pocket Commercial \n",
+            "value": "$5000",
+            "message": null,
+            "otherInfo": null
+          }
+        ]
+      },
+      {
+        "label": "Out of Plan-Network Status",
+        "serviceParameters": [
+          {
+            "key": "Family Calendar Year Deductible \n",
+            "value": "$5400",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Family Year to Date Deductible \n",
+            "value": "$0",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Individual Year to Date Deductible \n",
+            "value": "$0",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Individual Calendar Year Deductible \n",
+            "value": "$5400",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Family Remaining Deductible \n",
+            "value": "$5400",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Individual Remaining Deductible \n",
+            "value": "$5400",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Individual Calendar Year Out of Pocket Commercial \n",
+            "value": "$5000",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Family Calendar Year Out of Pocket Commercial \n",
+            "value": "$10000",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Individual Remaining Out of Pocket Commercial \n",
+            "value": "$5000",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Family Remaining Out of Pocket Commercial \n",
+            "value": "$10000",
+            "message": null,
+            "otherInfo": null
+          }
+        ]
+      },
+      {
+        "label": "Applies to In & Out Plan-Network Status",
+        "serviceParameters": [
+          {
+            "key": "Family Year to Date Out of Pocket Commercial \n",
+            "value": "$0",
+            "message": null,
+            "otherInfo": null
+          },
+          {
+            "key": "Individual Year to Date Out of Pocket Commercial \n",
+            "value": "$0",
+            "message": null,
+            "otherInfo": null
+          }
+        ]
+      }
+    ]
+  },
+  "servicesTypes": [
+    {
+      "serviceTypeName": "Others",
+      "serviceTypeSections": [
+        {
+          "label": "",
+          "serviceParameters": [
+            {
+              "key": "  Primary Care Provider  ",
+              "value": null,
+              "message": null,
+              "otherInfo": null
+            }
+          ]
+        },
+        {
+          "label": "[Primary Care Provider]",
+          "serviceParameters": [
+            {
+              "key": "   Name            ",
+              "value": " JAMES  BAROS ",
+              "message": null,
+              "otherInfo": null
+            },
+            {
+              "key": "   Address         ",
+              "value": " 19276 STONE OAK PKWY STE 102",
+              "message": null,
+              "otherInfo": null
+            },
+            {
+              "key": "City-State-Zip  ",
+              "value": " SAN ANTONIO, TX, 78258",
+              "message": null,
+              "otherInfo": null
+            },
+            {
+              "key": "   Information Contact ",
+              "value": " ",
+              "message": null,
+              "otherInfo": null
+            },
+            {
+              "key": "   Telephone ",
+              "value": " 2104947172",
+              "message": null,
+              "otherInfo": null
+            },
+            {
+              "key": "   Facsimile ",
+              "value": " 2104947562",
+              "message": null,
+              "otherInfo": null
+            },
+            {
+              "key": "   XX                   ",
+              "value": " 1619013554",
+              "message": null,
+              "otherInfo": null
+            },
+            {
+              "key": "   Name            ",
+              "value": "   DEROCHE DC ",
+              "message": null,
+              "otherInfo": null
+            },
+            {
+              "key": "   Address         ",
+              "value": " ",
+              "message": null,
+              "otherInfo": null
+            },
+            {
+              "key": "City-State-Zip  ",
+              "value": " , , ",
+              "message": null,
+              "otherInfo": null
+            },
+            {
+              "key": "   XX                   ",
+              "value": " 1295896512",
+              "message": null,
+              "otherInfo": null
+            }
+          ]
+        },
+        {
+          "label": "In Plan-Network Status",
+          "serviceParameters": []
+        },
+        {
+          "label": "Out of Plan-Network Status",
+          "serviceParameters": []
+        },
+        {
+          "label": "Applies to In & Out Plan-Network Status",
+          "serviceParameters": []
+        }
+      ]
+    },
+    {
+      "serviceTypeName": "Chiropractic",
+      "serviceTypeSections": [
+        {
+          "label": "In Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Active Coverage",
+              "value": null,
+              "message": null,
+              "otherInfo": [
+                {
+                  "key": "Policy Type",
+                  "value": "   ",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            },
+            {
+              "key": "Individual Visit Co-Payment \n",
+              "value": "$0",
+              "message": null,
+              "otherInfo": null
+            },
+            {
+              "key": "Individual Visit Co-Insurance \n",
+              "value": "20%",
+              "message": null,
+              "otherInfo": null
+            },
+            {
+              "key": "Individual Calendar Year Limitations Visits\n ",
+              "value": "20",
+              "message": [
+                "  LIMITATION COMBINED FOR IN AND OUT OF NETWORK\n"
+              ],
+              "otherInfo": [
+                {
+                  "key": "Quantity qualifier",
+                  "value": "Visits",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            },
+            {
+              "key": "Individual Remaining Limitations Visits\n ",
+              "value": "20",
+              "message": [
+                "  LIMITATION COMBINED FOR IN AND OUT OF NETWORK\n"
+              ],
+              "otherInfo": [
+                {
+                  "key": "Quantity qualifier",
+                  "value": "Visits",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Out of Plan-Network Status",
+          "serviceParameters": []
+        },
+        {
+          "label": "Applies to In & Out Plan-Network Status",
+          "serviceParameters": []
+        }
+      ]
+    },
+    {
+      "serviceTypeName": "Hospital",
+      "serviceTypeSections": [
+        {
+          "label": "In Plan-Network Status",
+          "serviceParameters": []
+        },
+        {
+          "label": "Out of Plan-Network Status",
+          "serviceParameters": []
+        },
+        {
+          "label": "Applies to In & Out Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Active Coverage",
+              "value": null,
+              "message": null,
+              "otherInfo": [
+                {
+                  "key": "Policy Type",
+                  "value": "   ",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "serviceTypeName": "Hospital - Inpatient",
+      "serviceTypeSections": [
+        {
+          "label": "In Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Individual Visit Co-Insurance \n",
+              "value": "20%",
+              "message": null,
+              "otherInfo": null
+            }
+          ]
+        },
+        {
+          "label": "Out of Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Individual Visit Co-Insurance \n",
+              "value": "40%",
+              "message": null,
+              "otherInfo": null
+            }
+          ]
+        },
+        {
+          "label": "Applies to In & Out Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Active Coverage",
+              "value": null,
+              "message": null,
+              "otherInfo": [
+                {
+                  "key": "Policy Type",
+                  "value": "   ",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            },
+            {
+              "key": "Individual Visit Co-Payment \n",
+              "value": "$0",
+              "message": null,
+              "otherInfo": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "serviceTypeName": "Hospital - Outpatient",
+      "serviceTypeSections": [
+        {
+          "label": "In Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Individual Visit Co-Insurance \n",
+              "value": "20%",
+              "message": null,
+              "otherInfo": null
+            }
+          ]
+        },
+        {
+          "label": "Out of Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Individual Visit Co-Insurance \n",
+              "value": "40%",
+              "message": null,
+              "otherInfo": null
+            }
+          ]
+        },
+        {
+          "label": "Applies to In & Out Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Active Coverage",
+              "value": null,
+              "message": null,
+              "otherInfo": [
+                {
+                  "key": "Policy Type",
+                  "value": "   ",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            },
+            {
+              "key": "Individual Visit Co-Payment \n",
+              "value": "$0",
+              "message": null,
+              "otherInfo": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "serviceTypeName": "Medical Care",
+      "serviceTypeSections": [
+        {
+          "label": "In Plan-Network Status",
+          "serviceParameters": []
+        },
+        {
+          "label": "Out of Plan-Network Status",
+          "serviceParameters": []
+        },
+        {
+          "label": "Applies to In & Out Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Active Coverage",
+              "value": null,
+              "message": null,
+              "otherInfo": [
+                {
+                  "key": "Policy Type",
+                  "value": "   ",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "serviceTypeName": "Physical Therapy",
+      "serviceTypeSections": [
+        {
+          "label": "In Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Individual Visit Co-Insurance \n",
+              "value": "20%",
+              "message": null,
+              "otherInfo": null
+            }
+          ]
+        },
+        {
+          "label": "Out of Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Individual Visit Co-Insurance \n",
+              "value": "40%",
+              "message": null,
+              "otherInfo": null
+            }
+          ]
+        },
+        {
+          "label": "Applies to In & Out Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Active Coverage",
+              "value": null,
+              "message": null,
+              "otherInfo": [
+                {
+                  "key": "Policy Type",
+                  "value": "   ",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            },
+            {
+              "key": "Individual Visit Co-Payment \n",
+              "value": "$0",
+              "message": null,
+              "otherInfo": null
+            },
+            {
+              "key": "Individual Calendar Year Limitations Visits\n ",
+              "value": "30",
+              "message": [
+                "  LIMITATION COMBINED FOR IN AND OUT OF NETWORK\n"
+              ],
+              "otherInfo": [
+                {
+                  "key": "Quantity qualifier",
+                  "value": "Visits",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            },
+            {
+              "key": "Individual Remaining Limitations Visits\n ",
+              "value": "27",
+              "message": [
+                "  LIMITATION COMBINED FOR IN AND OUT OF NETWORK\n"
+              ],
+              "otherInfo": [
+                {
+                  "key": "Quantity qualifier",
+                  "value": "Visits",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "serviceTypeName": "Professional (Physician)",
+      "serviceTypeSections": [
+        {
+          "label": "In Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Individual Visit Co-Insurance \n ",
+              "value": "20%",
+              "message": [
+                "  SPECIALIST\n"
+              ],
+              "otherInfo": null
+            },
+            {
+              "key": "Individual Visit Co-Insurance \n ",
+              "value": "20%",
+              "message": [
+                "  SPECIALIST\n"
+              ],
+              "otherInfo": null
+            }
+          ]
+        },
+        {
+          "label": "Out of Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Individual Visit Co-Insurance \n ",
+              "value": "40%",
+              "message": [
+                "  SPECIALIST\n"
+              ],
+              "otherInfo": null
+            },
+            {
+              "key": "Individual Visit Co-Insurance \n ",
+              "value": "40%",
+              "message": [
+                "  SPECIALIST\n"
+              ],
+              "otherInfo": null
+            }
+          ]
+        },
+        {
+          "label": "Applies to In & Out Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Active Coverage",
+              "value": null,
+              "message": null,
+              "otherInfo": [
+                {
+                  "key": "Policy Type",
+                  "value": "   ",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            },
+            {
+              "key": "Active Coverage",
+              "value": null,
+              "message": null,
+              "otherInfo": [
+                {
+                  "key": "Policy Type",
+                  "value": "   ",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            },
+            {
+              "key": "Individual Visit Co-Payment \n ",
+              "value": "$0",
+              "message": [
+                "  SPECIALIST\n"
+              ],
+              "otherInfo": null
+            },
+            {
+              "key": "Individual Visit Co-Payment \n ",
+              "value": "$0",
+              "message": [
+                "  SPECIALIST\n"
+              ],
+              "otherInfo": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "serviceTypeName": "Professional (Physician) Visit - Office",
+      "serviceTypeSections": [
+        {
+          "label": "In Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Individual Visit Co-Insurance \n",
+              "value": "20%",
+              "message": null,
+              "otherInfo": null
+            }
+          ]
+        },
+        {
+          "label": "Out of Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Individual Visit Co-Insurance \n",
+              "value": "40%",
+              "message": null,
+              "otherInfo": null
+            }
+          ]
+        },
+        {
+          "label": "Applies to In & Out Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Active Coverage",
+              "value": null,
+              "message": null,
+              "otherInfo": [
+                {
+                  "key": "Policy Type",
+                  "value": "   ",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            },
+            {
+              "key": "Individual Visit Co-Payment \n",
+              "value": "$0",
+              "message": null,
+              "otherInfo": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "serviceTypeName": "Vision (Optometry)",
+      "serviceTypeSections": [
+        {
+          "label": "In Plan-Network Status",
+          "serviceParameters": [
+            {
+              "key": "Active Coverage",
+              "value": null,
+              "message": null,
+              "otherInfo": [
+                {
+                  "key": "Policy Type",
+                  "value": "   ",
+                  "message": null,
+                  "otherInfo": null
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Out of Plan-Network Status",
+          "serviceParameters": []
+        },
+        {
+          "label": "Applies to In & Out Plan-Network Status",
+          "serviceParameters": []
+        }
+      ]
+    }
+  ],
+  "customFields": null,
+  "extensionProperties": {
+    "payerCode": "00192",
+    "payerID": 0,
+    "resultReport": null,
+    "verifiedOn": null,
+    "verifiedBy": null
+  },
+  "verificationStatusCode": 0,
+  "responseText": null,
+  "nonEDIResultPath": null,
+  "clientPayerName": null
+}

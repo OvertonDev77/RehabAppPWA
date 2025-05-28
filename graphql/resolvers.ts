@@ -1,5 +1,6 @@
 import { prisma } from "../prisma/globalPrisma";
 import { Prisma } from "@prisma/client";
+import { GraphQlError } from "./errors";
 
 // Types for pagination
 interface PaginationInput {
@@ -42,6 +43,14 @@ interface PrototypeRehabFilters {
   has_outings?: boolean;
   offers_MAT?: boolean;
   pagination?: PaginationInput;
+}
+
+// Types for Payer filter
+interface PayerFilterInput {
+  payer_code?: string;
+  payer_name?: string;
+  payer?: string;
+  id?: string;
 }
 
 // Helper function to get pagination params
@@ -124,6 +133,19 @@ function buildPrototypeWhere(
   return where;
 }
 
+// Helper to build where clause for payer
+function buildPayerWhere(filter: PayerFilterInput): Prisma.PayerWhereInput {
+  const where: Prisma.PayerWhereInput = {};
+  if (filter.payer_code) where.payer_code = filter.payer_code;
+  if (filter.payer_name) where.payer_name = filter.payer_name;
+  // Allow 'payer' to match either payer_code or payer_name
+  if (filter.payer) {
+    where.OR = [{ payer_code: filter.payer }, { payer_name: filter.payer }];
+  }
+  if (filter.id) where.payer_code = filter.id; // payer_code is the @id
+  return where;
+}
+
 export const resolvers = {
   Query: {
     // Admin search function
@@ -131,13 +153,20 @@ export const resolvers = {
       _: unknown,
       { filters = {} }: { filters: AdminRehabFilters }
     ) => {
-      const where = buildAdminWhere(filters);
-      const { skip, take } = getPaginationParams(filters.pagination);
-      return prisma.prototype_Rehabs.findMany({
-        where,
-        skip,
-        take,
-      });
+      try {
+        const where = buildAdminWhere(filters);
+        const { skip, take } = getPaginationParams(filters.pagination);
+        return prisma.prototype_Rehabs.findMany({
+          where,
+          skip,
+          take,
+        });
+      } catch {
+        throw new GraphQlError(
+          "Failed to fetch admin rehabs",
+          "ADMIN_REHABS_ERROR"
+        );
+      }
     },
 
     // Prototype search function with boolean filters
@@ -145,15 +174,42 @@ export const resolvers = {
       _: unknown,
       { filters = {} }: { filters: PrototypeRehabFilters }
     ) => {
-      const where = buildPrototypeWhere(filters);
-      const { skip, take } = getPaginationParams(filters.pagination);
-      return prisma.prototype_Rehabs.findMany({
-        where,
-        skip,
-        take,
-      });
+      try {
+        const where = buildPrototypeWhere(filters);
+        const { skip, take } = getPaginationParams(filters.pagination);
+        return prisma.prototype_Rehabs.findMany({
+          where,
+          skip,
+          take,
+        });
+      } catch {
+        throw new GraphQlError(
+          "Failed to fetch prototype rehabs",
+          "PROTOTYPE_REHABS_ERROR"
+        );
+      }
     },
 
     // Get single rehab by id or name
+    allPayers: async () => {
+      try {
+        return await prisma.payer.findMany();
+      } catch {
+        throw new GraphQlError("Failed to fetch payers", "ALL_PAYERS_ERROR");
+      }
+    },
+    payer: async (_: unknown, { filter }: { filter: PayerFilterInput }) => {
+      try {
+        const where = buildPayerWhere(filter);
+        const payer = await prisma.payer.findFirst({ where });
+        if (!payer) {
+          throw new GraphQlError("Payer not found", "PAYER_NOT_FOUND");
+        }
+        return payer;
+      } catch (error) {
+        if (error instanceof GraphQlError) throw error;
+        throw new GraphQlError("Failed to fetch payer", "PAYER_ERROR");
+      }
+    },
   },
 };

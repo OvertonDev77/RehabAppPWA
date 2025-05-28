@@ -1,5 +1,9 @@
 import { useQuery } from "@apollo/client";
-import { GET_PROTOTYPE_REHABS, GET_ADMIN_REHABS } from "./rehabQueries";
+import {
+  GET_PROTOTYPE_REHABS,
+  GET_ADMIN_REHABS,
+  GET_ALL_PAYERS,
+} from "./rehabQueries";
 
 // Types for our filters
 export interface PaginationInput {
@@ -91,6 +95,17 @@ export interface Rehab {
   nutrition_score?: number;
 }
 
+// Type for a single payer
+export interface Payer {
+  payer_code: string;
+  payer_name: string;
+  type: string;
+  eligibility: string;
+  claim_status: string;
+  column1?: string;
+  state?: string;
+}
+
 // Hook for fetching prototype rehabs with filters
 export function usePrototypeRehabs(filters: PrototypeRehabFilters = {}) {
   const { loading, error, data } = useQuery<{ prototypeRehabs: Rehab[] }>(
@@ -114,6 +129,21 @@ export function useAdminRehabs(filters: AdminRehabFilters = {}) {
     variables: { filters },
     fetchPolicy: "network-only",
   });
+}
+
+// Hook for fetching all payers
+export function useAllPayers() {
+  const { loading, error, data } = useQuery<{ allPayers: Payer[] }>(
+    GET_ALL_PAYERS,
+    {
+      fetchPolicy: "network-only",
+    }
+  );
+  return {
+    loading,
+    error,
+    payers: data?.allPayers || [],
+  };
 }
 
 // Hook for fetching a single rehab by ID or name

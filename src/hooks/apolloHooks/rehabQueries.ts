@@ -77,3 +77,17 @@ export const GET_ADMIN_REHABS = gql`
     }
   }
 `;
+
+export const GET_ALL_PAYERS = gql`
+  query GetAllPayers {
+    allPayers {
+      payer_code
+      payer_name
+      type
+      eligibility
+      claim_status
+      column1
+      state
+    }
+  }
+`;

@@ -1,0 +1,60 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# TestingRules
+
+## General Preferences
+- Use Jest as the test runner and assertion library.
+- Use `ts-jest` for TypeScript support.
+- Mock external dependencies (e.g., Prisma, Apollo Client) for unit tests.
+- Prefer unit tests for business logic and integration tests for API routes.
+- Write clear, descriptive test names and group related tests with `describe` blocks.
+- Cover both success and error/edge cases.
+
+## GraphQL Resolvers (`graphql/resolvers.ts`)
+- Write unit tests for all resolver functions (e.g., `adminRehabs`, `prototypeRehabs`).
+- Test all filter logic: array filters, boolean filters, and pagination.
+- Test edge cases: empty filters, missing fields, invalid input.
+- Test error handling (e.g., Prisma errors).
+- Mock the Prisma client to avoid real database calls.
+- Assert that the correct Prisma query is built and that the resolver returns the expected data.
+
+## API Route Handlers (`src/app/api/graphql/route.ts`, `src/app/api/crons/route.ts`)
+- Write integration tests for API routes using `supertest` or similar.
+- For GraphQL endpoint:
+  - Test GET and POST requests.
+  - Test valid and invalid queries.
+  - Test CORS and OPTIONS handling.
+- For crons endpoint:
+  - Test that the correct static data is returned.
+  - Test error handling by simulating errors in the handler.
+
+## Custom Hooks (`src/hooks/apolloHooks/rehabHooks.ts`, `hooks/usePayersAndRehabs.tsx`)
+- Write unit tests for all custom hooks.
+- Mock Apollo Client using `@apollo/client/testing`.
+- Test that hooks execute queries with the correct variables.
+- Test loading, error, and data states.
+- Test edge cases (e.g., empty filters, missing data).
+
+## Utility Functions (`src/lib/utils.ts`)
+- Write unit tests for all exported utility functions.
+- Test edge cases (e.g., empty input, multiple/conflicting classes).
+
+## Optional/Advanced
+- Consider validating the GraphQL schema against resolver implementation.
+- Consider type-level tests for TypeScript types using `tsd`.
+- For React components using these hooks, use React Testing Library for integration tests.
+
+# Example Coverage Table
+| File/Module                                 | What to Test                                 | Type         |
+|---------------------------------------------|----------------------------------------------|--------------|
+| `graphql/resolvers.ts`                      | All resolver logic, filters, pagination      | Unit         |
+| `src/app/api/graphql/route.ts`              | GET/POST, valid/invalid queries, CORS        | Integration  |
+| `src/app/api/crons/route.ts`                | GET, error handling                          | Integration  |
+| `src/hooks/apolloHooks/rehabHooks.ts`       | Hook logic, loading/error/data states        | Unit         |
+| `hooks/usePayersAndRehabs.tsx`              | Hook logic, loading/error/data states        | Unit         |
+| `src/lib/utils.ts`                          | Utility function output                      | Unit         |
+
+

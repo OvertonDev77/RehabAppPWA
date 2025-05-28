@@ -181,6 +181,12 @@ const filterOptions = {
 
 export default function RehabSearchFilter() {
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [selectedRehabs, setSelectedRehabs] = React.useState<typeof mockRehabs>(
+    []
+  );
+  const [sidebarView, setSidebarView] = React.useState<"filters" | "selected">(
+    "filters"
+  );
   const [selectedFilters, setSelectedFilters] = React.useState<{
     treatmentTypes: string[];
     amenities: string[];
@@ -206,6 +212,23 @@ export default function RehabSearchFilter() {
         ? [...prev[category], value]
         : prev[category].filter((item) => item !== value),
     }));
+  };
+
+  const handleRehabSelection = (
+    rehab: (typeof mockRehabs)[0],
+    isSelected: boolean
+  ) => {
+    if (isSelected && selectedRehabs.length >= 4) {
+      return; // Don't allow more than 4 selections
+    }
+
+    setSelectedRehabs((prev) =>
+      isSelected ? [...prev, rehab] : prev.filter((r) => r.id !== rehab.id)
+    );
+  };
+
+  const removeSelectedRehab = (rehabId: number) => {
+    setSelectedRehabs((prev) => prev.filter((r) => r.id !== rehabId));
   };
 
   const filteredRehabs = React.useMemo(() => {
@@ -241,6 +264,43 @@ export default function RehabSearchFilter() {
       });
     });
   }, [searchTerm, selectedFilters]);
+
+  const SelectedRehabCard = ({
+    rehab,
+    onRemove,
+  }: {
+    rehab: (typeof mockRehabs)[0];
+    onRemove: () => void;
+  }) => (
+    <Card className="p-3">
+      <div className="flex gap-3">
+        <img
+          src={rehab.image || "/placeholder.svg"}
+          alt={rehab.name}
+          className="w-16 h-12 object-cover rounded"
+        />
+        <div className="flex-1 min-w-0">
+          <h4 className="font-medium text-sm truncate">{rehab.name}</h4>
+          <p className="text-xs text-muted-foreground flex items-center gap-1">
+            <MapPin className="h-3 w-3" />
+            {rehab.location}
+          </p>
+          <div className="flex items-center gap-1 mt-1">
+            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+            <span className="text-xs">{rehab.rating}</span>
+          </div>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onRemove}
+          className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
+        >
+          ×
+        </Button>
+      </div>
+    </Card>
+  );
 
   const FilterSection = ({
     title,
@@ -282,59 +342,136 @@ export default function RehabSearchFilter() {
       <Sidebar className="border-r">
         <SidebarHeader>
           <div className="flex items-center gap-2 px-2 py-1">
-            <Filter className="h-4 w-4" />
-            <span className="font-semibold">Filter Rehabs</span>
+            {sidebarView === "filters" ? (
+              <>
+                <Filter className="h-4 w-4" />
+                <span className="font-semibold">Filter Rehabs</span>
+              </>
+            ) : (
+              <>
+                <Star className="h-4 w-4" />
+                <span className="font-semibold">
+                  Selected Rehabs ({selectedRehabs.length}/4)
+                </span>
+              </>
+            )}
           </div>
-          <div className="px-2">
-            <div className="relative">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search rehabs..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-8"
-              />
+          {sidebarView === "filters" && (
+            <div className="px-2">
+              <div className="relative">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search rehabs..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-8"
+                />
+              </div>
             </div>
-          </div>
+          )}
         </SidebarHeader>
         <SidebarContent>
-          <FilterSection
-            title="Treatment Types"
-            options={filterOptions.treatmentTypes}
-            category="treatmentTypes"
-          />
-          <FilterSection
-            title="Amenities"
-            options={filterOptions.amenities}
-            category="amenities"
-          />
-          <FilterSection
-            title="Insurance Accepted"
-            options={filterOptions.insuranceAccepted}
-            category="insuranceAccepted"
-          />
-          <FilterSection
-            title="Specialties"
-            options={filterOptions.specialties}
-            category="specialties"
-          />
-          <FilterSection
-            title="Locations"
-            options={filterOptions.locations}
-            category="locations"
-          />
+          {sidebarView === "filters" ? (
+            <>
+              <FilterSection
+                title="Treatment Types"
+                options={filterOptions.treatmentTypes}
+                category="treatmentTypes"
+              />
+              <FilterSection
+                title="Amenities"
+                options={filterOptions.amenities}
+                category="amenities"
+              />
+              <FilterSection
+                title="Insurance Accepted"
+                options={filterOptions.insuranceAccepted}
+                category="insuranceAccepted"
+              />
+              <FilterSection
+                title="Specialties"
+                options={filterOptions.specialties}
+                category="specialties"
+              />
+              <FilterSection
+                title="Locations"
+                options={filterOptions.locations}
+                category="locations"
+              />
+            </>
+          ) : (
+            <div className="px-2 space-y-3">
+              {selectedRehabs.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-sm text-muted-foreground">
+                    No rehabs selected yet
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Select up to 4 rehabs to compare
+                  </p>
+                </div>
+              ) : (
+                selectedRehabs.map((rehab) => (
+                  <SelectedRehabCard
+                    key={rehab.id}
+                    rehab={rehab}
+                    onRemove={() => removeSelectedRehab(rehab.id)}
+                  />
+                ))
+              )}
+              {selectedRehabs.length > 0 && (
+                <div className="pt-4 border-t">
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => {
+                      // Add compare functionality here
+                      console.log("Compare selected rehabs:", selectedRehabs);
+                    }}
+                  >
+                    Compare Selected ({selectedRehabs.length})
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
         </SidebarContent>
       </Sidebar>
 
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
+          <Button
+            variant={sidebarView === "selected" ? "default" : "outline"}
+            size="sm"
+            onClick={() =>
+              setSidebarView(sidebarView === "filters" ? "selected" : "filters")
+            }
+            className="ml-2"
+          >
+            {sidebarView === "filters" ? (
+              <>
+                <Star className="h-4 w-4 mr-1" />
+                Selected ({selectedRehabs.length})
+              </>
+            ) : (
+              <>
+                <Filter className="h-4 w-4 mr-1" />
+                Filters
+              </>
+            )}
+          </Button>
           <Separator orientation="vertical" className="mr-2 h-4" />
           <div className="flex items-center gap-2">
             <h1 className="text-lg font-semibold">Rehabilitation Centers</h1>
             <span className="text-sm text-muted-foreground">
               ({filteredRehabs.length} results)
             </span>
+            {selectedRehabs.length > 0 && (
+              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                {selectedRehabs.length}/4 selected
+              </span>
+            )}
           </div>
         </header>
 
@@ -351,12 +488,25 @@ export default function RehabSearchFilter() {
                 </div>
                 <CardHeader>
                   <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-lg">{rehab.name}</CardTitle>
-                      <CardDescription className="flex items-center gap-1 mt-1">
-                        <MapPin className="h-3 w-3" />
-                        {rehab.location}
-                      </CardDescription>
+                    <div className="flex items-start gap-3 flex-1">
+                      <Checkbox
+                        checked={selectedRehabs.some((r) => r.id === rehab.id)}
+                        onCheckedChange={(checked) =>
+                          handleRehabSelection(rehab, checked as boolean)
+                        }
+                        disabled={
+                          !selectedRehabs.some((r) => r.id === rehab.id) &&
+                          selectedRehabs.length >= 4
+                        }
+                        className="mt-1"
+                      />
+                      <div className="flex-1">
+                        <CardTitle className="text-lg">{rehab.name}</CardTitle>
+                        <CardDescription className="flex items-center gap-1 mt-1">
+                          <MapPin className="h-3 w-3" />
+                          {rehab.location}
+                        </CardDescription>
+                      </div>
                     </div>
                     <div className="flex items-center gap-1">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
