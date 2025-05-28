@@ -24,6 +24,7 @@ export const resolvers = {
       { filter = {} }: { filter: RehabFilterInput }
     ) => {
       try {
+        console.log("Rehab filter input:", filter);
         const where: any = {};
         if (filter.amenityNames) {
           where.amenities = { some: { name: { in: filter.amenityNames } } };
@@ -64,7 +65,7 @@ export const resolvers = {
         if (filter.stateNames) {
           where.states = { some: { name: { in: filter.stateNames } } };
         }
-        return await prisma.rehab.findMany({
+        const result = await prisma.rehab.findMany({
           where,
           include: {
             amenities: true,
@@ -80,7 +81,9 @@ export const resolvers = {
             states: true,
           },
         });
+        return result;
       } catch (error) {
+        console.error("Prisma error:", error);
         throw new GraphQlError("Failed to fetch rehabs", "REHABS_ERROR");
       }
     },
