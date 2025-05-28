@@ -4,198 +4,98 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("SUPABASE_DIRECT_URL")
 }
 
-model NationalDirectory {
-  id                                     Int       @id @default(autoincrement())
-  name1                                  String
-  name2                                  String?
-  street1                                String?
-  street2                                String?
-  city                                   String?
-  state                                  String?
-  zip                                    String?
-  phone                                  String?
-  intake1                                String?
-  intake2                                String?
-  intake1a                               String?
-  intake2a                               String?
-  service_code_info                      String?
-  service_codes                          String?
-  service_names                          String?
-  npi                                    String?   @unique
-  provider_first_name                    String?
-  provider_last_name                     String?
-  mailing_address                        String?
-  last_update                            DateTime?
-  health_care_provider_taxonomy_code_one String?
-  health_care_provider_taxonomy_code_two String?
-  in_network                             Boolean?
+model users {
+  id   Int    @id @default(autoincrement())
+  name String
 }
 
-model Payer {
-  payer_code   String  @id
-  payer_name   String
-  type         String
-  eligibility  String
-  claim_status String
-  column1      String?
-  state        String?
+
+model Rehab {
+  id          Int       @id @default(autoincrement())
+  name        String
+  address     String?
+  description String?
+  website     String?
+  // phone     String?   // Uncomment if you want to include phone
+
+  amenities           Amenity[]           @relation("RehabAmenities")
+  levels_of_care      LevelOfCare[]       @relation("RehabLevelsOfCare")
+  conditions          Condition[]         @relation("RehabConditions")
+  treatments          Treatment[]         @relation("RehabTreatments")
+  insuranceProviders  InsuranceProvider[] @relation("RehabInsuranceProviders")
+  clientele           Clientele[]         @relation("RehabClientele")
+  settings            Setting[]           @relation("RehabSettings")
+  approaches          Approach[]          @relation("RehabApproaches")
+  priceRanges         PriceRange[]        @relation("RehabPriceRanges")
+  countries           Country[]           @relation("RehabCountries")
+  states              State[]             @relation("RehabStates")
 }
 
-model AllRehabs {
-  id                                     Int       @id @default(autoincrement())
-  name1                                  String?
-  name2                                  String?
-  street1                                String?
-  street2                                String?
-  city                                   String?
-  state                                  String?
-  zip                                    String?
-  phone                                  String?
-  service_code_info                      String?
-  service_codes                          String?
-  service_names                          String?
-  npi                                    String?
-  provider_first_name                    String?
-  provider_last_name                     String?
-  mailing_address                        String?
-  last_update                            DateTime? @db.Date
-  health_care_provider_taxonomy_code_one String?
-  health_care_provider_taxonomy_code_two String?
+model Amenity {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  rehabs Rehab[] @relation("RehabAmenities")
 }
 
-model ServiceCodes {
-  id                Int    @id @default(autoincrement())
-  number_identifier String @db.VarChar(10)
-  name              String
-  unique_identifier String @unique @db.VarChar(10)
+model LevelOfCare {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  rehabs Rehab[] @relation("RehabLevelsOfCare")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model Prototype_Rehabs {
-  id                                     Int      @id @default(autoincrement())
-  name1                                  String?
-  name2                                  String?
-  street1                                String?
-  street2                                String?
-  city                                   String?
-  state                                  String?
-  zip                                    String?
-  phone                                  String?
-  service_code_info                      String?
-  service_codes                          String?
-  service_names                          String?
-  npi                                    String?
-  provider_first_name                    String?
-  provider_last_name                     String?
-  mailing_address                        String?
-  last_update                            DateTime? @db.Date
-  health_care_provider_taxonomy_code_one String?
-  health_care_provider_taxonomy_code_two String?
-  has_wifi                               Boolean?
-  pet_friendly                           Boolean?
-  family_visitation_allowed              Boolean?
-  transportation_services                Boolean?
-  accepts_insurance                      Boolean?
-  accepts_medicaid                       Boolean?
-  gender_specific                        String?
-  age_group                              String?
-  wheelchair_accessible                  Boolean?
-  spiritual_programs                     Boolean?
-  holistic_treatments                    Boolean?
-  aftercare_support                      Boolean?
-  alumni_program                         Boolean?
-  smoking_allowed                        Boolean?
-  outdoor_activities                     Boolean?
-  recreational_therapy                   Boolean?
-  art_therapy                            Boolean?
-  music_therapy                          Boolean?
-  equine_therapy                         Boolean?
-  staff_to_patient_ratio                 Float?
-  years_in_operation                     Int?
-  accreditation                          String?
-  licensed_therapists_count              Int?
-  average_rating                         Float?
-  number_of_reviews                      Int?
-  testimonials                           String?
-  virtual_tour_url                       String?
-  photos                                 String?
-  program_details                        String?
-  cost_and_payment                       String?
-  objective_summary                      String?
-  subjective_summary                     String?
-  comfort_score                          Float?
-  nutrition_score                        Float?
-  offers_suboxone                        Boolean?
-  offers_mat                             String?
-  has_outings                            Boolean?
-  offers_MAT                             Boolean?
-
-  @@map("Prototype_Rehabs")
+model Condition {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  rehabs Rehab[] @relation("RehabConditions")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model public__Prototype_Rehabs_ {
-  id                                     BigInt?
-  name1                                  String?
-  name2                                  String?
-  street1                                String?
-  street2                                String?
-  city                                   String?
-  state                                  String?
-  zip                                    String?
-  phone                                  String?
-  service_code_info                      String?
-  service_codes                          String?
-  service_names                          String?
-  npi                                    String?
-  provider_first_name                    String?
-  provider_last_name                     String?
-  mailing_address                        String?
-  last_update                            DateTime? @db.Date
-  health_care_provider_taxonomy_code_one String?
-  health_care_provider_taxonomy_code_two String?
-  has_wifi                               Boolean?
-  pet_friendly                           Boolean?
-  family_visitation_allowed              Boolean?
-  transportation_services                Boolean?
-  accepts_insurance                      Boolean?
-  accepts_medicaid                       Boolean?
-  gender_specific                        String?
-  age_group                              String?
-  wheelchair_accessible                  Boolean?
-  spiritual_programs                     Boolean?
-  holistic_treatments                    Boolean?
-  aftercare_support                      Boolean?
-  alumni_program                         Boolean?
-  smoking_allowed                        Boolean?
-  outdoor_activities                     Boolean?
-  recreational_therapy                   Boolean?
-  art_therapy                            Boolean?
-  music_therapy                          Boolean?
-  equine_therapy                         Boolean?
-  staff_to_patient_ratio                 Float?
-  years_in_operation                     BigInt?
-  accreditation                          String?
-  licensed_therapists_count              BigInt?
-  average_rating                         Float?
-  number_of_reviews                      BigInt?
-  testimonials                           String?
-  virtual_tour_url                       String?
-  photos                                 String?
-  program_details                        String?
-  cost_and_payment                       String?
-  objective_summary                      String?
-  subjective_summary                     String?
-  comfort_score                          Float?
-  nutrition_score                        Float?
-  offers_suboxone                        Boolean?
-  offers_mat                             String?
-  has_outings                            Boolean?
-  offers_MAT                             Boolean?
-
-  
-  @@ignore
+model Treatment {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  rehabs Rehab[] @relation("RehabTreatments")
 }
+
+model InsuranceProvider {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  rehabs Rehab[] @relation("RehabInsuranceProviders")
+}
+
+model Clientele {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  rehabs Rehab[] @relation("RehabClientele")
+}
+
+model Setting {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  rehabs Rehab[] @relation("RehabSettings")
+}
+
+model Approach {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  rehabs Rehab[] @relation("RehabApproaches")
+}
+
+model PriceRange {
+  id    Int     @id @default(autoincrement())
+  label String  @unique
+  rehabs Rehab[] @relation("RehabPriceRanges")
+}
+
+model Country {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  rehabs Rehab[] @relation("RehabCountries")
+}
+
+model State {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  rehabs Rehab[] @relation("RehabStates")
+} 

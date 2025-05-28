@@ -1,21 +1,48 @@
-// Types for the RehabSearch context
-import type {
-  PrototypeRehabFilters,
-  Rehab,
-} from "@/hooks/apolloHooks/rehabHooks";
+export type FilterCategoryKey =
+  | "amenities"
+  | "levelsOfCare"
+  | "conditions"
+  | "treatments"
+  | "insuranceProviders"
+  | "clienteles"
+  | "settings"
+  | "approaches"
+  | "priceRanges"
+  | "countries"
+  | "states";
 
-export type SidebarView = "filters" | "selected";
+export type FilterSelections = {
+  [K in FilterCategoryKey]: string[];
+};
 
 export interface RehabSearchContextType {
-  searchTerm: string;
-  setSearchTerm: (term: string) => void;
-  loadingProgress: number;
-  setLoadingProgress: (progress: number) => void;
-  filters: PrototypeRehabFilters;
-  setFilters: (filters: PrototypeRehabFilters) => void;
-  selectedRehabs: Rehab[];
-  setSelectedRehabs: (rehabs: Rehab[]) => void;
-  sidebarView: SidebarView;
-  setSidebarView: (view: SidebarView) => void;
-  handleFilterChange: (id: string, checked: boolean) => void;
+  selections: FilterSelections;
+  setSelections: (s: FilterSelections) => void;
+  filterOptions: {
+    amenities: string[];
+    levelsOfCare: string[];
+    conditions: string[];
+    treatments: string[];
+    insuranceProviders: string[];
+    clienteles: string[];
+    settings: string[];
+    approaches: string[];
+    priceRanges: string[];
+    countries: string[];
+    states: string[];
+  };
 }
+
+export const FILTER_STATE_TO_INPUT_KEY: Record<FilterCategoryKey, string> = {
+  amenities: "amenityNames",
+  levelsOfCare: "levelOfCareNames",
+  conditions: "conditionNames",
+  treatments: "treatmentNames",
+  insuranceProviders: "insuranceProviderNames",
+  clienteles: "clienteleNames",
+  settings: "settingNames",
+  approaches: "approachNames",
+  priceRanges: "priceRangeLabels",
+  countries: "countryNames",
+  states: "stateNames",
+};

@@ -1,11 +1,3 @@
-import { useContext } from "react";
-import { RehabSearchContext } from "./RehabSearchContext";
-import type { RehabSearchContextType } from "./types";
+import { useRehabSearchContext } from "./RehabSearchContext";
 
-export function useRehabSearch(): RehabSearchContextType {
-  const ctx = useContext(RehabSearchContext);
-  if (!ctx) {
-    throw new Error("useRehabSearch must be used within a RehabSearchProvider");
-  }
-  return ctx;
-}
+export const useRehabSearch = useRehabSearchContext;

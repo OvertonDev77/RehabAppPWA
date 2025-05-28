@@ -1,214 +1,185 @@
-import { prisma } from "../prisma/globalPrisma";
-import { Prisma } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { GraphQlError } from "./errors";
 
-// Types for pagination
-interface PaginationInput {
-  offset?: number;
-  limit?: number;
-}
+const prisma = new PrismaClient();
 
-// Types for admin search
-interface AdminRehabFilters {
-  name1s?: string[];
-  zips?: string[];
-  cities?: string[];
-  states?: string[];
-  npis?: string[];
-  pagination?: PaginationInput;
-}
-
-// Types for prototype search
-interface PrototypeRehabFilters {
-  name1s?: string[];
-  npis?: string[];
-  has_wifi?: boolean;
-  pet_friendly?: boolean;
-  family_visitation_allowed?: boolean;
-  transportation_services?: boolean;
-  accepts_insurance?: boolean;
-  accepts_medicaid?: boolean;
-  wheelchair_accessible?: boolean;
-  spiritual_programs?: boolean;
-  holistic_treatments?: boolean;
-  aftercare_support?: boolean;
-  alumni_program?: boolean;
-  smoking_allowed?: boolean;
-  outdoor_activities?: boolean;
-  recreational_therapy?: boolean;
-  art_therapy?: boolean;
-  music_therapy?: boolean;
-  equine_therapy?: boolean;
-  offers_suboxone?: boolean;
-  has_outings?: boolean;
-  offers_MAT?: boolean;
-  pagination?: PaginationInput;
-}
-
-// Types for Payer filter
-interface PayerFilterInput {
-  payer_code?: string;
-  payer_name?: string;
-  payer?: string;
-  id?: string;
-}
-
-// Helper function to get pagination params
-function getPaginationParams(pagination?: PaginationInput) {
-  return {
-    skip: pagination?.offset ?? 0,
-    take: pagination?.limit ?? undefined,
-  };
-}
-
-// Helper function to build admin search where clause
-function buildAdminWhere(
-  filters: AdminRehabFilters
-): Prisma.Prototype_RehabsWhereInput {
-  const where: Prisma.Prototype_RehabsWhereInput = {};
-
-  if (filters.name1s?.length) {
-    where.name1 = { in: filters.name1s };
-  }
-  if (filters.zips?.length) {
-    where.zip = { in: filters.zips };
-  }
-  if (filters.cities?.length) {
-    where.city = { in: filters.cities };
-  }
-  if (filters.states?.length) {
-    where.state = { in: filters.states };
-  }
-  if (filters.npis?.length) {
-    where.npi = { in: filters.npis };
-  }
-
-  return where;
-}
-
-// Helper function to build prototype search where clause
-function buildPrototypeWhere(
-  filters: PrototypeRehabFilters
-): Prisma.Prototype_RehabsWhereInput {
-  const where: Prisma.Prototype_RehabsWhereInput = {};
-
-  // Handle array filters
-  if (filters.name1s?.length) {
-    where.name1 = { in: filters.name1s };
-  }
-  if (filters.npis?.length) {
-    where.npi = { in: filters.npis };
-  }
-
-  // Handle boolean filters - include both true and false values
-  const booleanFields = [
-    "has_wifi",
-    "pet_friendly",
-    "family_visitation_allowed",
-    "transportation_services",
-    "accepts_insurance",
-    "accepts_medicaid",
-    "wheelchair_accessible",
-    "spiritual_programs",
-    "holistic_treatments",
-    "aftercare_support",
-    "alumni_program",
-    "smoking_allowed",
-    "outdoor_activities",
-    "recreational_therapy",
-    "art_therapy",
-    "music_therapy",
-    "equine_therapy",
-    "offers_suboxone",
-    "has_outings",
-    "offers_MAT",
-  ] as const;
-
-  booleanFields.forEach((field) => {
-    if (filters[field] !== undefined) {
-      where[field] = filters[field];
-    }
-  });
-
-  return where;
-}
-
-// Helper to build where clause for payer
-function buildPayerWhere(filter: PayerFilterInput): Prisma.PayerWhereInput {
-  const where: Prisma.PayerWhereInput = {};
-  if (filter.payer_code) where.payer_code = filter.payer_code;
-  if (filter.payer_name) where.payer_name = filter.payer_name;
-  // Allow 'payer' to match either payer_code or payer_name
-  if (filter.payer) {
-    where.OR = [{ payer_code: filter.payer }, { payer_name: filter.payer }];
-  }
-  if (filter.id) where.payer_code = filter.id; // payer_code is the @id
-  return where;
+export interface RehabFilterInput {
+  amenityNames?: string[];
+  levelOfCareNames?: string[];
+  conditionNames?: string[];
+  treatmentNames?: string[];
+  insuranceProviderNames?: string[];
+  clienteleNames?: string[];
+  settingNames?: string[];
+  approachNames?: string[];
+  priceRangeLabels?: string[];
+  countryNames?: string[];
+  stateNames?: string[];
 }
 
 export const resolvers = {
   Query: {
-    // Admin search function
-    adminRehabs: async (
+    rehabs: async (
       _: unknown,
-      { filters = {} }: { filters: AdminRehabFilters }
+      { filter = {} }: { filter: RehabFilterInput }
     ) => {
       try {
-        const where = buildAdminWhere(filters);
-        const { skip, take } = getPaginationParams(filters.pagination);
-        return prisma.prototype_Rehabs.findMany({
-          where,
-          skip,
-          take,
-        });
-      } catch {
-        throw new GraphQlError(
-          "Failed to fetch admin rehabs",
-          "ADMIN_REHABS_ERROR"
-        );
-      }
-    },
-
-    // Prototype search function with boolean filters
-    prototypeRehabs: async (
-      _: unknown,
-      { filters = {} }: { filters: PrototypeRehabFilters }
-    ) => {
-      try {
-        const where = buildPrototypeWhere(filters);
-        const { skip, take } = getPaginationParams(filters.pagination);
-        return prisma.prototype_Rehabs.findMany({
-          where,
-          skip,
-          take,
-        });
-      } catch {
-        throw new GraphQlError(
-          "Failed to fetch prototype rehabs",
-          "PROTOTYPE_REHABS_ERROR"
-        );
-      }
-    },
-
-    // Get single rehab by id or name
-    allPayers: async () => {
-      try {
-        return await prisma.payer.findMany();
-      } catch {
-        throw new GraphQlError("Failed to fetch payers", "ALL_PAYERS_ERROR");
-      }
-    },
-    payer: async (_: unknown, { filter }: { filter: PayerFilterInput }) => {
-      try {
-        const where = buildPayerWhere(filter);
-        const payer = await prisma.payer.findFirst({ where });
-        if (!payer) {
-          throw new GraphQlError("Payer not found", "PAYER_NOT_FOUND");
+        const where: any = {};
+        if (filter.amenityNames) {
+          where.amenities = { some: { name: { in: filter.amenityNames } } };
         }
-        return payer;
+        if (filter.levelOfCareNames) {
+          where.levels_of_care = {
+            some: { name: { in: filter.levelOfCareNames } },
+          };
+        }
+        if (filter.conditionNames) {
+          where.conditions = { some: { name: { in: filter.conditionNames } } };
+        }
+        if (filter.treatmentNames) {
+          where.treatments = { some: { name: { in: filter.treatmentNames } } };
+        }
+        if (filter.insuranceProviderNames) {
+          where.insuranceProviders = {
+            some: { name: { in: filter.insuranceProviderNames } },
+          };
+        }
+        if (filter.clienteleNames) {
+          where.clientele = { some: { name: { in: filter.clienteleNames } } };
+        }
+        if (filter.settingNames) {
+          where.settings = { some: { name: { in: filter.settingNames } } };
+        }
+        if (filter.approachNames) {
+          where.approaches = { some: { name: { in: filter.approachNames } } };
+        }
+        if (filter.priceRangeLabels) {
+          where.priceRanges = {
+            some: { label: { in: filter.priceRangeLabels } },
+          };
+        }
+        if (filter.countryNames) {
+          where.countries = { some: { name: { in: filter.countryNames } } };
+        }
+        if (filter.stateNames) {
+          where.states = { some: { name: { in: filter.stateNames } } };
+        }
+        return await prisma.rehab.findMany({
+          where,
+          include: {
+            amenities: true,
+            levels_of_care: true,
+            conditions: true,
+            treatments: true,
+            insuranceProviders: true,
+            clientele: true,
+            settings: true,
+            approaches: true,
+            priceRanges: true,
+            countries: true,
+            states: true,
+          },
+        });
       } catch (error) {
-        if (error instanceof GraphQlError) throw error;
-        throw new GraphQlError("Failed to fetch payer", "PAYER_ERROR");
+        throw new GraphQlError("Failed to fetch rehabs", "REHABS_ERROR");
+      }
+    },
+    amenities: async () => {
+      try {
+        return await prisma.amenity.findMany();
+      } catch {
+        throw new GraphQlError("Failed to fetch amenities", "AMENITIES_ERROR");
+      }
+    },
+    levelsOfCare: async () => {
+      try {
+        return await prisma.levelOfCare.findMany();
+      } catch {
+        throw new GraphQlError(
+          "Failed to fetch levels of care",
+          "LEVELS_OF_CARE_ERROR"
+        );
+      }
+    },
+    conditions: async () => {
+      try {
+        return await prisma.condition.findMany();
+      } catch {
+        throw new GraphQlError(
+          "Failed to fetch conditions",
+          "CONDITIONS_ERROR"
+        );
+      }
+    },
+    treatments: async () => {
+      try {
+        return await prisma.treatment.findMany();
+      } catch {
+        throw new GraphQlError(
+          "Failed to fetch treatments",
+          "TREATMENTS_ERROR"
+        );
+      }
+    },
+    insuranceProviders: async () => {
+      try {
+        return await prisma.insuranceProvider.findMany();
+      } catch {
+        throw new GraphQlError(
+          "Failed to fetch insurance providers",
+          "INSURANCE_PROVIDERS_ERROR"
+        );
+      }
+    },
+    clienteles: async () => {
+      try {
+        return await prisma.clientele.findMany();
+      } catch {
+        throw new GraphQlError(
+          "Failed to fetch clienteles",
+          "CLIENTELES_ERROR"
+        );
+      }
+    },
+    settings: async () => {
+      try {
+        return await prisma.setting.findMany();
+      } catch {
+        throw new GraphQlError("Failed to fetch settings", "SETTINGS_ERROR");
+      }
+    },
+    approaches: async () => {
+      try {
+        return await prisma.approach.findMany();
+      } catch {
+        throw new GraphQlError(
+          "Failed to fetch approaches",
+          "APPROACHES_ERROR"
+        );
+      }
+    },
+    priceRanges: async () => {
+      try {
+        return await prisma.priceRange.findMany();
+      } catch {
+        throw new GraphQlError(
+          "Failed to fetch price ranges",
+          "PRICE_RANGES_ERROR"
+        );
+      }
+    },
+    countries: async () => {
+      try {
+        return await prisma.country.findMany();
+      } catch {
+        throw new GraphQlError("Failed to fetch countries", "COUNTRIES_ERROR");
+      }
+    },
+    states: async () => {
+      try {
+        return await prisma.state.findMany();
+      } catch {
+        throw new GraphQlError("Failed to fetch states", "STATES_ERROR");
       }
     },
   },

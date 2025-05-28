@@ -1,93 +1,134 @@
 import { gql } from "@apollo/client";
 
-export const GET_PROTOTYPE_REHABS = gql`
-  query GetPrototypeRehabs($filters: PrototypeRehabFilters!) {
-    prototypeRehabs(filters: $filters) {
+export const GET_REHABS = gql`
+  query GetRehabs($filter: RehabFilterInput) {
+    rehabs(filter: $filter) {
       id
-      name1
-      name2
-      street1
-      street2
-      city
-      state
-      zip
-      phone
-      npi
-      has_wifi
-      pet_friendly
-      family_visitation_allowed
-      transportation_services
-      accepts_insurance
-      accepts_medicaid
-      wheelchair_accessible
-      spiritual_programs
-      holistic_treatments
-      aftercare_support
-      alumni_program
-      smoking_allowed
-      outdoor_activities
-      recreational_therapy
-      art_therapy
-      music_therapy
-      equine_therapy
-      offers_suboxone
-      has_outings
-      offers_MAT
-      staff_to_patient_ratio
-      years_in_operation
-      accreditation
-      licensed_therapists_count
-      average_rating
-      number_of_reviews
-      testimonials
-      virtual_tour_url
-      photos
-      program_details
-      cost_and_payment
-      objective_summary
-      subjective_summary
-      comfort_score
-      nutrition_score
+      name
+      address
+      description
+      website
+      amenities {
+        name
+      }
+      levels_of_care {
+        name
+      }
+      conditions {
+        name
+      }
+      treatments {
+        name
+      }
+      insuranceProviders {
+        name
+      }
+      clientele {
+        name
+      }
+      settings {
+        name
+      }
+      approaches {
+        name
+      }
+      priceRanges {
+        label
+      }
+      countries {
+        name
+      }
+      states {
+        name
+      }
     }
   }
 `;
 
-export const GET_ADMIN_REHABS = gql`
-  query GetAdminRehabs($filters: AdminRehabFilters!) {
-    adminRehabs(filters: $filters) {
-      id
-      name1
-      name2
-      street1
-      street2
-      city
-      state
-      zip
-      phone
-      npi
-      service_code_info
-      service_codes
-      service_names
-      provider_first_name
-      provider_last_name
-      mailing_address
-      last_update
-      health_care_provider_taxonomy_code_one
-      health_care_provider_taxonomy_code_two
+export const GET_AMENITIES = gql`
+  query GetAmenities {
+    amenities {
+      name
     }
   }
 `;
 
-export const GET_ALL_PAYERS = gql`
-  query GetAllPayers {
-    allPayers {
-      payer_code
-      payer_name
-      type
-      eligibility
-      claim_status
-      column1
-      state
+export const GET_LEVELS_OF_CARE = gql`
+  query GetLevelsOfCare {
+    levelsOfCare {
+      name
+    }
+  }
+`;
+
+export const GET_CONDITIONS = gql`
+  query GetConditions {
+    conditions {
+      name
+    }
+  }
+`;
+
+export const GET_TREATMENTS = gql`
+  query GetTreatments {
+    treatments {
+      name
+    }
+  }
+`;
+
+export const GET_INSURANCE_PROVIDERS = gql`
+  query GetInsuranceProviders {
+    insuranceProviders {
+      name
+    }
+  }
+`;
+
+export const GET_CLIENTELES = gql`
+  query GetClienteles {
+    clienteles {
+      name
+    }
+  }
+`;
+
+export const GET_SETTINGS = gql`
+  query GetSettings {
+    settings {
+      name
+    }
+  }
+`;
+
+export const GET_APPROACHES = gql`
+  query GetApproaches {
+    approaches {
+      name
+    }
+  }
+`;
+
+export const GET_PRICE_RANGES = gql`
+  query GetPriceRanges {
+    priceRanges {
+      label
+    }
+  }
+`;
+
+export const GET_COUNTRIES = gql`
+  query GetCountries {
+    countries {
+      name
+    }
+  }
+`;
+
+export const GET_STATES = gql`
+  query GetStates {
+    states {
+      name
     }
   }
 `;
