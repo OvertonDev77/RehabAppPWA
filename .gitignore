@@ -41,4 +41,9 @@ yarn-error.log*
 next-env.d.ts
 
 .env  
-temp_credentials.txt 
+temp_credentials.txt  
+
+RehabSearchFilterExample.tsx 
+
+PVerify Eligibilty Text.md  
+
