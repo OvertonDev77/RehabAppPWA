@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import {
   GET_REHABS,
   GET_AMENITIES,
@@ -13,6 +13,7 @@ import {
   GET_COUNTRIES,
   GET_STATES,
 } from "./rehabQueries";
+import { gql } from "@apollo/client";
 
 export interface RehabFilterInput {
   amenityNames?: string[];
@@ -93,4 +94,114 @@ export function useCountries() {
 export function useStates() {
   const { loading, error, data } = useQuery(GET_STATES);
   return { loading, error, states: data?.states || [] };
+}
+
+export interface User {
+  id: number;
+  name: string;
+  rehabs?: Rehab[];
+  reviews?: Review[];
+}
+
+export interface Review {
+  id: number;
+  content: string;
+  rating: number;
+  createdAt: string;
+  user: User;
+  rehab: Rehab;
+}
+
+export interface Rehab {
+  id: number;
+  name: string;
+  address?: string;
+  description?: string;
+  website?: string;
+  amenities?: { name: string }[];
+  levels_of_care?: { name: string }[];
+  conditions?: { name: string }[];
+  treatments?: { name: string }[];
+  insuranceProviders?: { name: string }[];
+  clientele?: { name: string }[];
+  settings?: { name: string }[];
+  approaches?: { name: string }[];
+  priceRanges?: { label: string }[];
+  countries?: { name: string }[];
+  states?: { name: string }[];
+  reviews?: Review[];
+  user?: User;
+}
+
+export const CREATE_USER = gql`
+  mutation CreateUser($input: CreateUserInput!) {
+    createUser(input: $input) {
+      id
+      name
+    }
+  }
+`;
+
+export const ADD_REVIEW = gql`
+  mutation AddReview($input: AddReviewInput!) {
+    addReview(input: $input) {
+      id
+      content
+      rating
+      createdAt
+      user {
+        id
+        name
+      }
+      rehab {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const REVIEWS_BY_REHAB = gql`
+  query ReviewsByRehab($rehabId: Int!) {
+    reviewsByRehab(rehabId: $rehabId) {
+      id
+      content
+      rating
+      createdAt
+      user {
+        id
+        name
+      }
+      rehab {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export function useCreateUser() {
+  return useMutation<{ createUser: User }, { input: { name: string } }>(
+    CREATE_USER
+  );
+}
+
+export function useAddReview() {
+  return useMutation<
+    { addReview: Review },
+    {
+      input: {
+        rehabId: number;
+        userId: number;
+        content: string;
+        rating: number;
+      };
+    }
+  >(ADD_REVIEW);
+}
+
+export function useReviewsByRehab(rehabId: number) {
+  return useQuery<{ reviewsByRehab: Review[] }>(REVIEWS_BY_REHAB, {
+    variables: { rehabId },
+  });
 }

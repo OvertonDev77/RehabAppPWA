@@ -53,6 +53,22 @@ type State {
   name: String!
 }
 
+type User {
+  id: Int!
+  name: String!
+  rehabs: [Rehab!]
+  reviews: [Review!]
+}
+
+type Review {
+  id: Int!
+  content: String!
+  rating: Int!
+  createdAt: String!
+  user: User!
+  rehab: Rehab!
+}
+
 type Rehab {
   id: Int!
   name: String!
@@ -70,6 +86,8 @@ type Rehab {
   priceRanges: [PriceRange!]!
   countries: [Country!]!
   states: [State!]!
+  reviews: [Review!]!
+  user: User
 }
 
 input RehabFilterInput {
@@ -86,6 +104,17 @@ input RehabFilterInput {
   stateNames: [String!]
 }
 
+input CreateUserInput {
+  name: String!
+}
+
+input AddReviewInput {
+  rehabId: Int!
+  userId: Int!
+  content: String!
+  rating: Int!
+}
+
 type Query {
   rehabs(filter: RehabFilterInput): [Rehab!]!
   amenities: [Amenity!]!
@@ -99,4 +128,10 @@ type Query {
   priceRanges: [PriceRange!]!
   countries: [Country!]!
   states: [State!]!
+  reviewsByRehab(rehabId: Int!): [Review!]!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+  addReview(input: AddReviewInput!): Review!
 }

@@ -185,5 +185,76 @@ export const resolvers = {
         throw new GraphQlError("Failed to fetch states", "STATES_ERROR");
       }
     },
+    reviewsByRehab: async (_: unknown, { rehabId }: { rehabId: number }) => {
+      try {
+        return await prisma.review.findMany({
+          where: { rehabId },
+          include: { user: true, rehab: true },
+          orderBy: { createdAt: "desc" },
+        });
+      } catch (error) {
+        throw new GraphQlError("Failed to fetch reviews", "REVIEWS_ERROR");
+      }
+    },
+  },
+  Mutation: {
+    createUser: async (_: unknown, { input }: { input: { name: string } }) => {
+      try {
+        return await prisma.users.create({ data: { name: input.name } });
+      } catch (error) {
+        throw new GraphQlError("Failed to create user", "CREATE_USER_ERROR");
+      }
+    },
+    addReview: async (
+      _: unknown,
+      {
+        input,
+      }: {
+        input: {
+          rehabId: number;
+          userId: number;
+          content: string;
+          rating: number;
+        };
+      }
+    ) => {
+      try {
+        return await prisma.review.create({
+          data: {
+            rehabId: input.rehabId,
+            userId: input.userId,
+            content: input.content,
+            rating: input.rating,
+          },
+          include: { user: true, rehab: true },
+        });
+      } catch (error) {
+        throw new GraphQlError("Failed to add review", "ADD_REVIEW_ERROR");
+      }
+    },
+  },
+  Rehab: {
+    reviews: (parent: any) =>
+      prisma.review.findMany({
+        where: { rehabId: parent.id },
+        include: { user: true },
+        orderBy: { createdAt: "desc" },
+      }),
+    user: (parent: any) =>
+      parent.userId
+        ? prisma.users.findUnique({ where: { id: parent.userId } })
+        : null,
+  },
+  Review: {
+    user: (parent: any) =>
+      prisma.users.findUnique({ where: { id: parent.userId } }),
+    rehab: (parent: any) =>
+      prisma.rehab.findUnique({ where: { id: parent.rehabId } }),
+  },
+  User: {
+    reviews: (parent: any) =>
+      prisma.review.findMany({ where: { userId: parent.id } }),
+    rehabs: (parent: any) =>
+      prisma.rehab.findMany({ where: { userId: parent.id } }),
   },
 };

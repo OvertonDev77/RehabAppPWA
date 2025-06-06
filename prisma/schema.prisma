@@ -3,14 +3,16 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("SUPABASE_DATABASE_URL")
-  directUrl = env("SUPABASE_DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model users {
   id   Int    @id @default(autoincrement())
   name String
+  reviews Review[]
+  rehabs Rehab[] @relation("UserRehabs")
 }
 
 
@@ -33,6 +35,9 @@ model Rehab {
   priceRanges         PriceRange[]        @relation("RehabPriceRanges")
   countries           Country[]           @relation("RehabCountries")
   states              State[]             @relation("RehabStates")
+  reviews             Review[]
+  userId              Int?
+  user                users?              @relation("UserRehabs", fields: [userId], references: [id])
 }
 
 model Amenity {
@@ -99,4 +104,15 @@ model State {
   id    Int     @id @default(autoincrement())
   name  String  @unique
   rehabs Rehab[] @relation("RehabStates")
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  content   String
+  rating    Int
+  createdAt DateTime @default(now())
+  userId    Int
+  rehabId   Int
+  user      users    @relation(fields: [userId], references: [id])
+  rehab     Rehab    @relation(fields: [rehabId], references: [id])
 } 
