@@ -1,3 +1,6 @@
+import { Rehab } from "@/hooks/apolloHooks/rehabHooks";
+import React from "react";
+
 export type FilterCategoryKey =
   | "amenities"
   | "levelsOfCare"
@@ -31,6 +34,8 @@ export interface RehabSearchContextType {
     countries: string[];
     states: string[];
   };
+  selectedRehabs: Rehab[] | [];
+  setSelectedRehabs: React.Dispatch<React.SetStateAction<Rehab[]>>;
 }
 
 export const FILTER_STATE_TO_INPUT_KEY: Record<FilterCategoryKey, string> = {

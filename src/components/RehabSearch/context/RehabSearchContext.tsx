@@ -12,6 +12,7 @@ import {
   usePriceRanges,
   useCountries,
   useStates,
+  Rehab,
 } from "@/hooks/apolloHooks/rehabHooks";
 
 const defaultSelections: FilterSelections = {
@@ -37,6 +38,8 @@ export const RehabSearchProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [selections, setSelections] =
     useState<FilterSelections>(defaultSelections);
+
+  const [selectedRehabs, setSelectedRehabs] = useState<Rehab[] | []>([]);
 
   const { amenities } = useAmenities();
   const { levelsOfCare } = useLevelsOfCare();
@@ -81,7 +84,13 @@ export const RehabSearchProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <RehabSearchContext.Provider
-      value={{ selections, setSelections, filterOptions }}
+      value={{
+        selections,
+        setSelections,
+        filterOptions,
+        selectedRehabs,
+        setSelectedRehabs,
+      }}
     >
       {children}
     </RehabSearchContext.Provider>

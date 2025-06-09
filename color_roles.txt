@@ -1,0 +1,84 @@
+ Role                   | Usage Description                                       |
+| ---------------------- | ------------------------------------------------------- |
+| **Primary**            | Dominant buttons, active states, key interactions.      |
+| **Primary Variant**    | Hover/focus states of primary elements.                 |
+| **Secondary**          | Subtle accents, UI highlights, backgrounds.             |
+| **Secondary Variant**  | Hover/focus states of secondary elements.               |
+| **Accent**             | Calls-to-action, feature highlights.                    |
+| **Accent Secondary**   | Alternative highlights or supporting interactions.      |
+| **Background**         | Main canvas, general interface backdrop.                |
+| **Background Variant** | Alternate backgrounds, depth-indicating elements.       |
+| **Surface**            | Cards, panels, overlays, modals, drawers.               |
+| **Surface Variant**    | Slightly darker/lighter surfaces, nested content areas. |
+| **Border**             | Separating elements, defining boundaries.               |
+| **Divider**            | Subtle separation within content sections.              |
+| **Overlay**            | Backdrop for modals, side panels, loading states.       |
+| **Shadow**             | Element depth indicators via box-shadows.               |
+| **Text Primary**       | Headlines, body text, main content.                     |
+| **Text Secondary**     | Supporting info, descriptions, captions.                |
+| **Text Disabled**      | Text on disabled elements, placeholders.                |
+| **Icon Primary**       | Main functional icons.                                  |
+| **Icon Secondary**     | Decorative, supplementary icons.                        |
+| **Interactive**        | Clickable links, interactive text.                      |
+| **Interactive Hover**  | Hover states for interactive elements.                  |
+| **Visited**            | Previously visited links or actions.                    |
+| **Success**            | Positive feedback, confirmations.                       |
+| **Error**              | Errors, critical alerts, validation states.             |
+| **Warning**            | Cautionary alerts, urgent notifications.                |
+| **Info**               | General information messages, hints, tips.              |
+| **Disabled**           | Inactive states for elements.                           |
+| **Selection**          | Highlighted or selected items, focused states.          |
+| **Highlight**          | Text or content emphasis (search matches, highlights).  |
+| **Scrollbar**          | Custom scroll elements.                                 |
+
+
+
+
+
+
+Light Theme 
+
+/* Color Theme Swatches in Hex */
+.Rehab-Application-1-hex { color: #67B895; }
+.Rehab-Application-2-hex { color: #3799B8; }
+.Rehab-Application-3-hex { color: #38B8AE; }
+.Rehab-Application-4-hex { color: #61B876; }
+.Rehab-Application-5-hex { color: #3770B8; }
+
+/* Color Theme Swatches in RGBA */
+.Rehab-Application-1-rgba { color: rgba(103, 184, 149, 1); }
+.Rehab-Application-2-rgba { color: rgba(55, 153, 184, 1); }
+.Rehab-Application-3-rgba { color: rgba(56, 184, 174, 1); }
+.Rehab-Application-4-rgba { color: rgba(97, 184, 118, 1); }
+.Rehab-Application-5-rgba { color: rgba(55, 112, 184, 1); }
+
+/* Color Theme Swatches in HSLA */
+.Rehab-Application-1-hsla { color: hsla(154, 36, 56, 1); }
+.Rehab-Application-2-hsla { color: hsla(194, 53, 46, 1); }
+.Rehab-Application-3-hsla { color: hsla(175, 53, 47, 1); }
+.Rehab-Application-4-hsla { color: hsla(134, 37, 55, 1); }
+.Rehab-Application-5-hsla { color: hsla(213, 53, 46, 1); }
+
+DARK THEME 
+/* Color Theme Swatches in Hex */
+.Recover_2_Theme_Dark-1-hex { color: #252273; }
+.Recover_2_Theme_Dark-2-hex { color: #33308C; }
+.Recover_2_Theme_Dark-3-hex { color: #222059; }
+.Recover_2_Theme_Dark-4-hex { color: #6360BF; }
+.Recover_2_Theme_Dark-5-hex { color: #F2F2F2; }
+
+/* Color Theme Swatches in RGBA */
+.Recover_2_Theme_Dark-1-rgba { color: rgba(37, 34, 115, 1); }
+.Recover_2_Theme_Dark-2-rgba { color: rgba(51, 48, 140, 1); }
+.Recover_2_Theme_Dark-3-rgba { color: rgba(34, 32, 89, 1); }
+.Recover_2_Theme_Dark-4-rgba { color: rgba(99, 96, 191, 1); }
+.Recover_2_Theme_Dark-5-rgba { color: rgba(242, 242, 242, 1); }
+
+/* Color Theme Swatches in HSLA */
+.Recover_2_Theme_Dark-1-hsla { color: hsla(242, 54, 29, 1); }
+.Recover_2_Theme_Dark-2-hsla { color: hsla(241, 48, 36, 1); }
+.Recover_2_Theme_Dark-3-hsla { color: hsla(242, 47, 23, 1); }
+.Recover_2_Theme_Dark-4-hsla { color: hsla(241, 42, 56, 1); }
+.Recover_2_Theme_Dark-5-hsla { color: hsla(0, 0, 94, 1); }
+
+

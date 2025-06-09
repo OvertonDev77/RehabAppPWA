@@ -1,135 +1,195 @@
 import React, { useState } from "react";
+import Image from "next/image";
+import { Rehab } from "@/hooks/apolloHooks/rehabHooks";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
-  useAddReview,
-  useReviewsByRehab,
-  Review,
-  Rehab,
-} from "@/hooks/apolloHooks/rehabHooks";
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  MapPin,
+  Star,
+  Wifi,
+  Dumbbell,
+  Utensils,
+  CheckCircle,
+  Heart,
+} from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
+import { useRehabSearchContext } from "../context/RehabSearchContext";
 
-const RehabCard: React.FC<{ rehab: Rehab; userId?: number }> = ({
-  rehab,
-  userId,
-}) => {
-  return (
-    <div className="border rounded-lg p-4 bg-white shadow">
-      <h2 className="text-lg font-bold mb-2">{rehab.name}</h2>
-      <div className="text-sm text-gray-600 mb-1">{rehab.address}</div>
-      <div className="text-sm text-gray-800 mb-2">{rehab.description}</div>
-      <div className="flex flex-wrap gap-2 text-xs">
-        {rehab.amenities?.length && rehab.amenities.length > 0 && (
-          <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
-            Amenities: {rehab.amenities.map((a) => a.name).join(", ")}
-          </span>
-        )}
-        {rehab.approaches?.length && rehab.approaches.length > 0 && (
-          <span className="bg-green-100 text-green-800 px-2 py-1 rounded">
-            Approaches: {rehab.approaches.map((a) => a.name).join(", ")}
-          </span>
-        )}
-        {rehab.treatments?.length && rehab.treatments.length > 0 && (
-          <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded">
-            Treatments: {rehab.treatments.map((t) => t.name).join(", ")}
-          </span>
-        )}
-      </div>
-      {userId && <ReviewSection rehabId={rehab.id} userId={userId} />}
-    </div>
-  );
+// Helper: get fallback Unsplash images
+const getFallbackImages = (count = 3) =>
+  [
+    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80",
+  ].slice(0, count);
+
+function getRehabImages(rehab: Rehab): string[] {
+  const photos = (rehab as { photos?: string | string[] }).photos;
+  if (Array.isArray(photos) && photos.length > 0) {
+    return photos;
+  }
+  if (typeof photos === "string" && photos.length > 0) {
+    return [photos];
+  }
+  return getFallbackImages(2);
+}
+
+// Map some amenities to lucide-react icons
+const amenityIconMap: Record<string, React.ElementType> = {
+  Wifi: Wifi,
+  Gym: Dumbbell,
+  Meals: Utensils,
+  "24/7 Care": CheckCircle,
 };
 
-const ReviewSection: React.FC<{ rehabId: number; userId: number }> = ({
-  rehabId,
-  userId,
-}) => {
-  const { data, loading, error, refetch } = useReviewsByRehab(rehabId);
-  const [addReview] = useAddReview();
-  const [content, setContent] = useState("");
-  const [rating, setRating] = useState(5);
-  const [submitting, setSubmitting] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+const RehabCard: React.FC<{ rehab: Rehab }> = ({ rehab }) => {
+  const images = getRehabImages(rehab).slice(0, 2); // Only show first 2 images
+  const [imgLoaded, setImgLoaded] = useState(Array(images.length).fill(false));
+  const { selectedRehabs, setSelectedRehabs } = useRehabSearchContext();
+  const isSelected = selectedRehabs.some((r) => r.id === rehab.id);
 
-  console.log(errorMsg);
+  // Insurance dropdown
+  const insuranceProviders = rehab.insuranceProviders || [];
+  const [selectedInsurance, setSelectedInsurance] = useState<string>("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setErrorMsg("");
-    try {
-      await addReview({
-        variables: { input: { rehabId, userId, content, rating } },
-      });
-      setContent("");
-      setRating(5);
-      refetch();
-    } catch (error: any) {
-      setErrorMsg(error.message);
-    } finally {
-      setSubmitting(false);
+  // Amenities with icons
+  const amenities = (rehab.amenities || []).slice(0, 3);
+
+  // Star rating calculation (from reviews if present)
+  let avgRating = undefined;
+  if (Array.isArray(rehab.reviews) && rehab.reviews.length > 0) {
+    avgRating =
+      rehab.reviews.reduce((sum, r) => sum + (r.rating || 0), 0) /
+      rehab.reviews.length;
+  }
+
+  // Heart click handler
+  const handleHeartClick = () => {
+    if (isSelected) {
+      setSelectedRehabs(selectedRehabs.filter((r) => r.id !== rehab.id));
+    } else {
+      setSelectedRehabs([...selectedRehabs, rehab]);
     }
   };
 
   return (
-    <div className="mt-4">
-      <h3 className="font-semibold mb-2">Leave a Review</h3>
-      <form onSubmit={handleSubmit} className="mb-4 space-y-2">
-        <textarea
-          className="w-full border rounded p-2"
-          rows={2}
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Write your review..."
-          required
+    <Card className="relative w-full max-w-4xl mx-auto shadow-lg">
+      {/* Heart at top right */}
+      <button
+        className="absolute top-4 right-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white"
+        onClick={handleHeartClick}
+        aria-label={isSelected ? "Unselect rehab" : "Select rehab"}
+      >
+        <Heart
+          className={`h-6 w-6 transition-colors ${
+            isSelected ? "fill-red-500 text-red-500" : "text-gray-400"
+          }`}
         />
-        <div className="flex items-center gap-2">
-          <label>Rating:</label>
-          <select
-            value={rating}
-            onChange={(e) => setRating(Number(e.target.value))}
-            className="border rounded p-1"
-          >
-            {[1, 2, 3, 4, 5].map((n) => (
-              <option key={n} value={n}>
-                {n}
-              </option>
-            ))}
-          </select>
-          <button
-            type="submit"
-            className="ml-auto bg-blue-600 text-white px-3 py-1 rounded"
-            disabled={submitting}
-          >
-            {submitting ? "Submitting..." : "Submit"}
-          </button>
-        </div>
-        {errorMsg && <div className="text-red-500 text-sm">{errorMsg}</div>}
-      </form>
-      <h4 className="font-semibold mb-1">Reviews</h4>
-      {loading ? (
-        <div>Loading reviews...</div>
-      ) : error ? (
-        <div className="text-red-500">Error loading reviews</div>
-      ) : (
-        <div className="space-y-2">
-          {data?.reviewsByRehab?.length === 0 && <div>No reviews yet.</div>}
-          {data?.reviewsByRehab?.map((review: Review) => (
-            <div key={review.id} className="border rounded p-2 bg-gray-50">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="font-semibold text-sm">
-                  {review.user?.name || "User"}
-                </span>
-                <span className="text-yellow-500">
-                  {"★".repeat(review.rating)}
-                </span>
-                <span className="text-xs text-gray-400 ml-auto">
-                  {new Date(review.createdAt).toLocaleString()}
-                </span>
+      </button>
+      {/* Carousel using shadcn/ui pattern */}
+      <Carousel className="w-full mb-4" opts={{ align: "start" }}>
+        <CarouselContent className="-ml-2">
+          {images.map((src, idx) => (
+            <CarouselItem key={src} className="pl-2 basis-1/2">
+              <div className="relative h-48 w-full">
+                {!imgLoaded[idx] && (
+                  <Skeleton className="absolute inset-0 w-full h-full" />
+                )}
+                <Image
+                  src={src}
+                  alt={rehab.name || "Rehab"}
+                  fill
+                  className="object-cover rounded-xl"
+                  sizes="(max-width: 768px) 100vw, 400px"
+                  onLoad={() =>
+                    setImgLoaded((prev) => {
+                      const arr = [...prev];
+                      arr[idx] = true;
+                      return arr;
+                    })
+                  }
+                />
               </div>
-              <div className="text-sm">{review.content}</div>
-            </div>
+            </CarouselItem>
           ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+      <CardContent className="pt-0 pb-2">
+        {/* Location */}
+        <div className="flex items-center gap-1 text-xs text-muted-foreground mb-1">
+          <MapPin className="h-4 w-4" />
+          {rehab.address}
         </div>
-      )}
-    </div>
+        {/* Name and Star */}
+        <div className="flex items-center gap-2 mb-1">
+          <CardTitle className="text-lg font-bold truncate flex-1">
+            {rehab.name}
+          </CardTitle>
+          <div className="flex items-center gap-1">
+            <Star className="h-5 w-5 text-yellow-400 fill-yellow-400" />
+            <span className="font-semibold text-sm">
+              {typeof avgRating === "number" ? avgRating.toFixed(1) : "-"}
+            </span>
+          </div>
+        </div>
+        {/* Insurance Dropdown */}
+        <div className="mb-2 max-w-xs">
+          <Select
+            value={selectedInsurance}
+            onValueChange={setSelectedInsurance}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Insurance Accepted" />
+            </SelectTrigger>
+            <SelectContent>
+              {insuranceProviders.length === 0 ? (
+                <SelectItem value="none" disabled>
+                  No insurance listed
+                </SelectItem>
+              ) : (
+                insuranceProviders.map((ip) => (
+                  <SelectItem key={ip.name} value={ip.name}>
+                    {ip.name}
+                  </SelectItem>
+                ))
+              )}
+            </SelectContent>
+          </Select>
+        </div>
+        {/* Description */}
+        <div className="text-sm text-gray-800 mb-2 min-h-[2.5em]">
+          {rehab.description}
+        </div>
+        {/* Amenities with icons */}
+        <div className="flex gap-4 mb-2">
+          {amenities.map((a) => {
+            const Icon = amenityIconMap[a.name] || CheckCircle;
+            return (
+              <div key={a.name} className="flex items-center gap-1 text-xs">
+                <Icon className="h-4 w-4 text-blue-500" />
+                <span>{a.name}</span>
+              </div>
+            );
+          })}
+        </div>
+      </CardContent>
+      {/* No CardFooter/ReviewSection */}
+    </Card>
   );
 };
 

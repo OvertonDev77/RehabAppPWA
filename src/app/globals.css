@@ -11,19 +11,41 @@
     --card-foreground: 0 0% 9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 9%;
-    --primary: 262 83% 58%;
+    --primary: 194 53% 46%; /* Rehab-Application-2 */
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
+    --secondary: 154 36% 56%; /* Rehab-Application-1 */
     --secondary-foreground: 0 0% 9%;
+    --accent: 175 53% 47%; /* Rehab-Application-3 */
+    --accent-foreground: 0 0% 9%;
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 9%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 93%;
     --input: 0 0% 93%;
-    --ring: 262 83% 58%;
+    --ring: 194 53% 46%; /* Rehab-Application-2 */
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 242 47% 23%; /* Recover_2_Theme_Dark-3 */
+    --foreground: 0 0% 94%; /* Recover_2_Theme_Dark-5 */
+    --card: 242 47% 23%;
+    --card-foreground: 0 0% 94%;
+    --popover: 242 47% 23%;
+    --popover-foreground: 0 0% 94%;
+    --primary: 242 54% 29%; /* Recover_2_Theme_Dark-1 */
+    --primary-foreground: 0 0% 94%;
+    --secondary: 241 48% 36%; /* Recover_2_Theme_Dark-2 */
+    --secondary-foreground: 0 0% 94%;
+    --accent: 241 42% 56%; /* Recover_2_Theme_Dark-4 */
+    --accent-foreground: 0 0% 94%;
+    --muted: 0 0% 32%;
+    --muted-foreground: 0 0% 64%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 241 42% 56%; /* Recover_2_Theme_Dark-4 */
+    --input: 241 42% 56%;
+    --ring: 242 54% 29%; /* Recover_2_Theme_Dark-1 */
     --radius: 0.5rem;
   }
 }

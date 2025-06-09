@@ -25,15 +25,14 @@ const config = {
         "dm-sans": ["var(--font-dm-sans)"],
       },
       colors: {
-        // Modern Minimalist Theme
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(0 0% 100%)", // Pure white
-        foreground: "hsl(0 0% 9%)", // Near black
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(262 83% 58%)", // Single vibrant purple accent
-          foreground: "hsl(0 0% 100%)",
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
           50: "hsl(262 83% 97%)",
           100: "hsl(262 83% 94%)",
           200: "hsl(262 83% 87%)",
@@ -46,28 +45,28 @@ const config = {
           900: "hsl(262 83% 18%)",
         },
         secondary: {
-          DEFAULT: "hsl(0 0% 96%)", // Light gray
-          foreground: "hsl(0 0% 9%)",
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
         },
         accent: {
-          DEFAULT: "hsl(0 0% 96%)",
-          foreground: "hsl(0 0% 9%)",
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(0 0% 96%)",
-          foreground: "hsl(0 0% 45%)",
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
         destructive: {
-          DEFAULT: "hsl(0 84% 60%)",
-          foreground: "hsl(0 0% 98%)",
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
         card: {
-          DEFAULT: "hsl(0 0% 100%)",
-          foreground: "hsl(0 0% 9%)",
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
         },
         popover: {
-          DEFAULT: "hsl(0 0% 100%)",
-          foreground: "hsl(0 0% 9%)",
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
         },
         // Grayscale palette
         gray: {
