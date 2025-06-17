@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+const { PrismaClient } = require("./generated/index.js");
 
 const prisma = new PrismaClient();
 
@@ -92,109 +92,8 @@ const STATES = [
   "Illinois",
   "Georgia",
 ];
-const CITIES = [
-  ["Los Angeles", "California"],
-  ["Miami", "Florida"],
-  ["New York", "New York"],
-  ["Houston", "Texas"],
-  ["Phoenix", "Arizona"],
-  ["Denver", "Colorado"],
-  ["Chicago", "Illinois"],
-  ["Atlanta", "Georgia"],
-  ["San Diego", "California"],
-  ["Orlando", "Florida"],
-  ["Buffalo", "New York"],
-  ["Dallas", "Texas"],
-  ["Tucson", "Arizona"],
-  ["Boulder", "Colorado"],
-  ["Springfield", "Illinois"],
-  ["Savannah", "Georgia"],
-];
 
-const REHAB_PROFILES = [
-  [
-    "Serenity Shores Recovery",
-    "A luxury beachfront facility in Miami offering holistic and evidence-based therapies for adults and young professionals.",
-  ],
-  [
-    "Mountainview Wellness Retreat",
-    "Nestled in the Colorado Rockies, this center specializes in trauma therapy and mindfulness for all ages.",
-  ],
-  [
-    "Urban Renewal Center",
-    "A modern, city-based rehab in Chicago focused on outpatient and group therapy for working adults.",
-  ],
-  [
-    "Sunrise Pathways",
-    "A holistic center in Phoenix with yoga, meditation, and art therapy for women and teens.",
-  ],
-  [
-    "Harbor Light Recovery",
-    "A lakeside facility in upstate New York, known for its family visitation and alumni programs.",
-  ],
-  [
-    "Palm Grove Detox",
-    "A top-rated detox and residential center in Orlando, Florida, with private rooms and gourmet dining.",
-  ],
-  [
-    "Blue Ridge Healing",
-    "A countryside retreat in Georgia offering equine therapy and outdoor activities for veterans and executives.",
-  ],
-  [
-    "Pacific Horizons",
-    "A coastal California rehab with a focus on dual diagnosis and evidence-based approaches.",
-  ],
-  [
-    "Tranquil Pines",
-    "A serene, in-home and outpatient program in Dallas, Texas, for older adults and couples.",
-  ],
-  [
-    "Lighthouse Recovery",
-    "A faith-based, twelve-step program in Houston, Texas, with strong aftercare support.",
-  ],
-  [
-    "Oasis Renewal",
-    "A tropical island center in Mexico, specializing in holistic and bio-medical treatments.",
-  ],
-  [
-    "Summit View Center",
-    "A mountain facility in Boulder, Colorado, with a focus on young adults and trauma therapy.",
-  ],
-  [
-    "Liberty Wellness",
-    "A city-based program in Atlanta, Georgia, for LGBTQ+ and diverse clientele, offering DBT and group therapy.",
-  ],
-  [
-    "Harmony House",
-    "A residential rehab in Los Angeles, California, with art studio and music therapy for creative professionals.",
-  ],
-  [
-    "Hope Springs",
-    "A family-friendly center in Springfield, Illinois, with alumni and aftercare programs.",
-  ],
-  [
-    "New Dawn Recovery",
-    "A holistic and evidence-based center in Tucson, Arizona, with yoga and meditation rooms.",
-  ],
-  [
-    "Riverbend Retreat",
-    "A lakeside Illinois facility with private rooms and gourmet nutrition for executives.",
-  ],
-  [
-    "Coastal Serenity",
-    "A beachside California rehab with spa, pool, and luxury amenities for adults.",
-  ],
-  [
-    "Freedom Path",
-    "A veteran-focused program in Savannah, Georgia, with trauma therapy and mindfulness.",
-  ],
-  [
-    "Bright Future Center",
-    "A youth and adolescent program in Buffalo, New York, with group and recreational therapy.",
-  ],
-];
-
-function getRandom<T>(arr: T[], k: number) {
+function getRandom(arr, k) {
   const shuffled = arr.slice();
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -203,7 +102,7 @@ function getRandom<T>(arr: T[], k: number) {
   return shuffled.slice(0, k);
 }
 
-async function ensureLookup(model: any, values: string[], uniqueField: string) {
+async function ensureLookup(model, values, uniqueField) {
   for (const value of values) {
     await model.upsert({
       where: { [uniqueField]: value },
@@ -214,7 +113,7 @@ async function ensureLookup(model: any, values: string[], uniqueField: string) {
 }
 
 async function main() {
-  // Populate lookup tables
+  // Populate lookup tables (these use upsert to avoid duplicates)
   await ensureLookup(prisma.amenity, AMENITIES, "name");
   await ensureLookup(prisma.levelOfCare, LEVELS_OF_CARE, "name");
   await ensureLookup(prisma.condition, CONDITIONS, "name");
@@ -240,25 +139,42 @@ async function main() {
   const countries = await prisma.country.findMany();
   const states = await prisma.state.findMany();
 
-  // Seed rehabs
-  for (let i = 0; i < 20; i++) {
-    const [name, description] = REHAB_PROFILES[i];
-    const [city, stateName] = CITIES[i % CITIES.length];
-    const address = `${Math.floor(Math.random() * 900 + 100)} ${
-      getRandom(["Main St", "Oak Ave", "Pine Rd", "Maple Blvd"], 1)[0]
-    }, ${city}, ${stateName}`;
-    const website = `https://${name
-      .toLowerCase()
-      .replace(/ /g, "-")
-      .replace(/,/g, "")
-      .replace(/&/g, "and")}.com`;
+  // 0. Delete all current Rehabs
+  // Since we are deleting all Rehabs, we do not need to upsert or check for duplicates.
+  await prisma.rehab.deleteMany();
+
+  // 1. Select all NPIRehabs where state exists at all
+  const npiRehabs = await prisma.nPIRehabs.findMany({
+    where: {
+      state: { not: null },
+    },
+    take: 2000, // 2. Limit to 2000
+  });
+
+  // Only proceed if exactly 2000 items were found
+  if (npiRehabs.length !== 2000) {
+    console.error(
+      `Expected 2000 NPIRehabs, but found ${npiRehabs.length}. Seeding aborted.`
+    );
+    return;
+  }
+
+  // 3. Map and seed
+  // We simply create new Rehab records for each NPIRehabs entry (no upsert needed)
+  for (const npi of npiRehabs) {
+    // Find the state object for relation
+    const stateObj = states.find((s) => s.name === npi.state);
+    // Default country to United States
+    const countryObj = countries.find((c) => c.name === "United States");
 
     await prisma.rehab.create({
       data: {
-        name,
-        address,
-        description,
-        website,
+        name: npi.organization_name,
+        address: npi.address || null,
+        phone: npi.phone || null,
+        last_updated_nppes: npi.last_updated || null,
+        // Optionally, you can generate a website or leave null
+        website: null,
         amenities: {
           connect: getRandom(amenities, 4).map((a) => ({ id: a.id })),
         },
@@ -286,14 +202,16 @@ async function main() {
         priceRanges: {
           connect: getRandom(priceRanges, 1).map((p) => ({ id: p.id })),
         },
-        countries: {
-          connect: getRandom(countries, 1).map((c) => ({ id: c.id })),
-        },
-        states: { connect: getRandom(states, 1).map((s) => ({ id: s.id })) },
+        countries: countryObj
+          ? { connect: [{ id: countryObj.id }] }
+          : undefined,
+        states: stateObj ? { connect: [{ id: stateObj.id }] } : undefined,
       },
     });
   }
-  console.log("Seeded 20 realistic fictional rehabs and all features.");
+  console.log(
+    `Seeded ${npiRehabs.length} rehabs from NPIRehabs and all features.`
+  );
 }
 
 main()

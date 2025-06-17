@@ -1,108 +1,111 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-js" 
+  output = "../prisma/generated"  
+  binaryTargets = ["native"] 
+  
 }
 
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  directUrl = env("DIRECT_URL") 
+  
 }
 
 model users {
-  id   Int    @id @default(autoincrement())
-  name String
+  id      Int      @id @default(autoincrement())
+  name    String
+  rehabs  Rehab[]  @relation("UserRehabs")
   reviews Review[]
-  rehabs Rehab[] @relation("UserRehabs")
 }
 
-
 model Rehab {
-  id          Int       @id @default(autoincrement())
-  name        String
-  address     String?
-  description String?
-  website     String?
-  // phone     String?   // Uncomment if you want to include phone
-
-  amenities           Amenity[]           @relation("RehabAmenities")
-  levels_of_care      LevelOfCare[]       @relation("RehabLevelsOfCare")
-  conditions          Condition[]         @relation("RehabConditions")
-  treatments          Treatment[]         @relation("RehabTreatments")
-  insuranceProviders  InsuranceProvider[] @relation("RehabInsuranceProviders")
-  clientele           Clientele[]         @relation("RehabClientele")
-  settings            Setting[]           @relation("RehabSettings")
-  approaches          Approach[]          @relation("RehabApproaches")
-  priceRanges         PriceRange[]        @relation("RehabPriceRanges")
-  countries           Country[]           @relation("RehabCountries")
-  states              State[]             @relation("RehabStates")
-  reviews             Review[]
-  userId              Int?
-  user                users?              @relation("UserRehabs", fields: [userId], references: [id])
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  address            String?
+  description        String? 
+  phone              String?  
+  last_updated_nppes DateTime?  
+  website            String?
+  userId             Int?
+  user               users?              @relation("UserRehabs", fields: [userId], references: [id])
+  reviews            Review[]
+  amenities          Amenity[]           @relation("RehabAmenities")
+  approaches         Approach[]          @relation("RehabApproaches")
+  clientele          Clientele[]         @relation("RehabClientele")
+  conditions         Condition[]         @relation("RehabConditions")
+  countries          Country[]           @relation("RehabCountries")
+  insuranceProviders InsuranceProvider[] @relation("RehabInsuranceProviders")
+  levels_of_care     LevelOfCare[]       @relation("RehabLevelsOfCare")
+  priceRanges        PriceRange[]        @relation("RehabPriceRanges")
+  settings           Setting[]           @relation("RehabSettings")
+  states             State[]             @relation("RehabStates")
+  treatments         Treatment[]         @relation("RehabTreatments")
 }
 
 model Amenity {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
   rehabs Rehab[] @relation("RehabAmenities")
 }
 
 model LevelOfCare {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
   rehabs Rehab[] @relation("RehabLevelsOfCare")
 }
 
 model Condition {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
   rehabs Rehab[] @relation("RehabConditions")
 }
 
 model Treatment {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
   rehabs Rehab[] @relation("RehabTreatments")
 }
 
 model InsuranceProvider {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
   rehabs Rehab[] @relation("RehabInsuranceProviders")
 }
 
 model Clientele {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
   rehabs Rehab[] @relation("RehabClientele")
 }
 
 model Setting {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
   rehabs Rehab[] @relation("RehabSettings")
 }
 
 model Approach {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
   rehabs Rehab[] @relation("RehabApproaches")
 }
 
 model PriceRange {
-  id    Int     @id @default(autoincrement())
-  label String  @unique
+  id     Int     @id @default(autoincrement())
+  label  String  @unique
   rehabs Rehab[] @relation("RehabPriceRanges")
 }
 
 model Country {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
   rehabs Rehab[] @relation("RehabCountries")
 }
 
 model State {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
   rehabs Rehab[] @relation("RehabStates")
 }
 
@@ -113,6 +116,18 @@ model Review {
   createdAt DateTime @default(now())
   userId    Int
   rehabId   Int
-  user      users    @relation(fields: [userId], references: [id])
   rehab     Rehab    @relation(fields: [rehabId], references: [id])
-} 
+  user      users    @relation(fields: [userId], references: [id])
+}
+
+model NPIRehabs {
+  npi_number        String    @id @unique @db.VarChar(20)
+  organization_name String
+  address           String?
+  city              String?   @db.VarChar(100)
+  state             String?   @db.VarChar(20)
+  postal_code       String?   @db.VarChar(20)
+  phone             String?   @db.VarChar(20)
+  taxonomy_code     String?   @db.VarChar(20)
+  last_updated      DateTime? @db.Date
+}

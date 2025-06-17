@@ -6,6 +6,7 @@ import { FILTER_STATE_TO_INPUT_KEY, FilterSelections } from "../context/types";
 import { Rehab } from "@/hooks/apolloHooks/rehabHooks";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { useUserStateLocation } from "@/hooks/useUserStateLocation";
 
 const SkeletonCard = () => (
   <Card className="w-full max-w-4xl mx-auto">
@@ -32,11 +33,9 @@ const ResultsGrid: React.FC = () => {
   const { rehabs, loading, error } = useRehabs(
     transformSelectionsToFilter(selections)
   );
+  const { state: userState, loading: locationLoading } = useUserStateLocation();
 
-  // Simulate a session user for development
-  const userId = 1;
-
-  if (loading) {
+  if (loading || locationLoading) {
     return (
       <div className="flex flex-row justify-center gap-8">
         <div className="grid grid-cols-1 gap-4 mt-8 w-3/5 max-w-4xl">
@@ -58,6 +57,28 @@ const ResultsGrid: React.FC = () => {
     );
   }
   if (error) return <div>Error loading rehabs: {error.message}</div>;
+
+  // Filter rehabs by user state if available and no filters have been applied
+  const noFiltersApplied = Object.values(selections).every(
+    (arr) => Array.isArray(arr) && arr.length === 0
+  );
+  let rehabsToShow = rehabs;
+  let showNearYou = false;
+  if (userState && noFiltersApplied) {
+    rehabsToShow = rehabs.filter(
+      (rehab: Rehab) =>
+        Array.isArray(rehab.states) &&
+        rehab.states.some(
+          (s) => s.name && s.name.toLowerCase() === userState.toLowerCase()
+        )
+    );
+    showNearYou = true;
+    // If no rehabs in state, fallback to all
+    if (rehabsToShow.length === 0) {
+      rehabsToShow = rehabs;
+      showNearYou = false;
+    }
+  }
 
   return (
     <Suspense
@@ -81,10 +102,15 @@ const ResultsGrid: React.FC = () => {
         </div>
       }
     >
-      <div className="flex flex-row justify-center gap-8">
-        <div className="grid grid-cols-1 gap-4 mt-8 w-3/5 max-w-4xl">
-          {rehabs.map((rehab: Rehab) => (
-            <RehabCard key={rehab.id} rehab={rehab} userId={userId} />
+      <div className="flex flex-row gap-8">
+        <div className="grid grid-cols-1 gap-4 mt-8 w-full">
+          {showNearYou && (
+            <h2 className="text-2xl font-bold mb-4">
+              Rehabs Near You ({userState})
+            </h2>
+          )}
+          {rehabsToShow.map((rehab: Rehab) => (
+            <RehabCard key={rehab.id} rehab={rehab} />
           ))}
         </div>
         <div className="w-1/4 min-w-[250px] sticky top-24 h-fit">

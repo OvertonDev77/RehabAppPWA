@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { Search, User, ChevronDown } from "lucide-react";
+import { User, ChevronDown, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRehabSearchContext } from "./context/RehabSearchContext";
 import { FilterSelections, FilterCategoryKey } from "./context/types";
+import Image from "next/image";
 
 const CATEGORY_MAP = [
   { label: "United States", key: "states" },
@@ -14,12 +15,31 @@ const CATEGORY_MAP = [
   { label: "Insurance", key: "insuranceProviders" },
 ];
 
+// Helper: get fallback Unsplash images
+const getFallbackImages = (count = 3) =>
+  [
+    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80",
+  ].slice(0, count);
+
+function getRehabImages(rehab: unknown): string[] {
+  const photos = (rehab as { photos?: string | string[] }).photos;
+  if (Array.isArray(photos) && photos.length > 0) {
+    return photos;
+  }
+  if (typeof photos === "string" && photos.length > 0) {
+    return [photos];
+  }
+  return getFallbackImages(1);
+}
+
 export default function AppNavbar() {
-  const { selections, setSelections, filterOptions } = useRehabSearchContext();
+  const { selections, setSelections, filterOptions, selectedRehabs } =
+    useRehabSearchContext();
   const [isAddictionHovered, setIsAddictionHovered] = useState(false);
   const [activeTab, setActiveTab] = useState<string | null>(null);
-  const [isSelectionsVisible, setIsSelectionsVisible] = useState(false);
-  const [fullSearchOpen, setFullSearchOpen] = useState(false);
+  const [showSelectedPopover, setShowSelectedPopover] = useState(false);
 
   const handleSelection = (categoryKey: FilterCategoryKey, value: string) => {
     const newSelections: FilterSelections = {
@@ -27,7 +47,6 @@ export default function AppNavbar() {
       [categoryKey]: [value],
     };
     setSelections(newSelections);
-    setIsSelectionsVisible(true);
   };
 
   const renderTabContent = () => {
@@ -65,29 +84,24 @@ export default function AppNavbar() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="text-2xl font-bold text-blue-600">
-              RecoveryFinder
+              The Rehab App
             </Link>
           </div>
 
-          {/* Search Bar */}
-          <div className="flex-1 max-w-md mx-8">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          {/* Centered Search Bar */}
+          <div className="flex-1 flex justify-center">
+            <div className="w-full max-w-md">
               <Input
                 type="text"
                 placeholder="Search recovery centers..."
                 className="pl-10 w-full"
-                onClick={() => setFullSearchOpen(true)}
+                // onChange={...} // search logic not implemented yet
               />
-
-              {fullSearchOpen && (
-                <div className="relative grid-cols-1 grid-rows-3 bg-primary-100"></div>
-              )}
             </div>
           </div>
 
           {/* Navigation Items */}
-          <div className="flex items-center space-x-8">
+          <div className="flex items-center space-x-6">
             <div
               className="relative"
               onMouseEnter={() => setIsAddictionHovered(true)}
@@ -136,11 +150,62 @@ export default function AppNavbar() {
             </div>
 
             <Link
-              href="/about"
+              href="/resources"
               className="text-gray-700 hover:text-blue-600 transition-colors"
             >
-              About us
+              Resources
             </Link>
+
+            {/* Selected Rehabs Icon with Badge */}
+            <div className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowSelectedPopover((v) => !v)}
+                aria-label="View selected rehabs"
+              >
+                <Heart
+                  className={
+                    selectedRehabs.length > 0 ? "text-red-500" : "text-gray-400"
+                  }
+                />
+                {selectedRehabs.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs px-1.5 py-0.5">
+                    {selectedRehabs.length}
+                  </span>
+                )}
+              </Button>
+              {/* Popover for selected rehabs */}
+              {showSelectedPopover && selectedRehabs.length > 0 && (
+                <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 shadow-lg rounded-lg z-50 p-4">
+                  <h4 className="font-semibold mb-2">Selected Rehabs</h4>
+                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                    {selectedRehabs.map((rehab) => {
+                      const images = getRehabImages(rehab);
+                      return (
+                        <div
+                          key={rehab.id}
+                          className="flex items-center gap-3 p-2 border rounded"
+                        >
+                          <Image
+                            src={images[0]}
+                            alt={rehab.name || "Rehab"}
+                            className="w-12 h-12 object-cover rounded"
+                            width={48}
+                            height={48}
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium text-sm truncate">
+                              {rehab.name}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
 
             <Button variant="ghost" size="icon">
               <User className="h-5 w-5" />
@@ -148,59 +213,6 @@ export default function AppNavbar() {
           </div>
         </div>
       </nav>
-
-      {/* Demo Content */}
-      <div className="max-w-7xl mx-auto p-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Find Recovery Centers
-        </h1>
-        <p className="text-gray-600">
-          Use the navigation above to filter recovery centers by location,
-          amenities, settings, levels of care, and insurance acceptance.
-        </p>
-      </div>
-
-      {/* Toggle Button for Selections */}
-      <div className="fixed bottom-4 right-4">
-        <Button
-          onClick={() => setIsSelectionsVisible(true)}
-          className="rounded-full shadow-lg"
-          variant="default"
-        >
-          View Selections
-        </Button>
-      </div>
-
-      {/* Current State Display - Now at the bottom */}
-      <div
-        className={`fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg transition-transform duration-300 ${
-          isSelectionsVisible ? "translate-y-0" : "translate-y-full"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto p-4">
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="text-sm font-medium text-gray-600">
-              Current Selections:
-            </h3>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsSelectionsVisible(false)}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              Close
-            </Button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 text-sm">
-            {CATEGORY_MAP.map((cat) => (
-              <div key={cat.key}>
-                <span className="font-medium">{cat.label}:</span>{" "}
-                {selections[cat.key as keyof typeof selections][0] || "None"}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { ChevronLeft, ChevronRight, ChevronDown, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +9,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { useRehabSearch } from "./context/useRehabSearch";
-import { FilterCategoryKey } from "./context/types";
+import { FilterCategoryKey, FilterSelections } from "./context/types";
 
 const formatCategoryName = (key: string): string => {
   return key
@@ -20,7 +20,6 @@ const formatCategoryName = (key: string): string => {
 
 const FilterTopBar: React.FC = () => {
   const { selections, setSelections, filterOptions } = useRehabSearch();
-  const [showSelections, setShowSelections] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const scrollLeft = () => {
@@ -40,12 +39,13 @@ const FilterTopBar: React.FC = () => {
     value: string,
     checked: boolean
   ) => {
-    setSelections((prev) => ({
-      ...prev,
+    const newSelections: FilterSelections = {
+      ...selections,
       [category]: checked
-        ? [...prev[category], value]
-        : prev[category].filter((item) => item !== value),
-    }));
+        ? [...selections[category], value]
+        : selections[category].filter((item: string) => item !== value),
+    };
+    setSelections(newSelections);
   };
 
   const getSelectedCount = (category: FilterCategoryKey): number => {
@@ -54,18 +54,6 @@ const FilterTopBar: React.FC = () => {
 
   return (
     <div className="w-full max-w-6xl mx-auto p-6">
-      {/* Toggle Button for Selections */}
-      <div className="mb-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setShowSelections(!showSelections)}
-          className="text-xs"
-        >
-          {showSelections ? "Hide" : "Show"} Selections
-        </Button>
-      </div>
-
       <div className="flex items-center gap-2">
         {/* Left Chevron */}
         <Button
@@ -160,16 +148,6 @@ const FilterTopBar: React.FC = () => {
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
-
-      {/* Debug: Show current selections */}
-      {showSelections && (
-        <div className="mt-8 p-4 bg-muted rounded-lg">
-          <h3 className="font-semibold mb-2">Current Selections:</h3>
-          <pre className="text-xs overflow-auto">
-            {JSON.stringify(selections, null, 2)}
-          </pre>
-        </div>
-      )}
     </div>
   );
 };
