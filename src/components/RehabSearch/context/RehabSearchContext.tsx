@@ -109,14 +109,15 @@ export const RehabSearchProvider: React.FC<{ children: React.ReactNode }> = ({
   const contextValue = useMemo(
     () => ({
       selections,
-      setSelectionsFromQueryObject,
       setSelections,
+      setSelectionsFromQueryObject,
       filterOptions,
       selectedRehabs,
       setSelectedRehabs,
     }),
     [
       selections,
+      setSelections,
       setSelectionsFromQueryObject,
       filterOptions,
       selectedRehabs,
