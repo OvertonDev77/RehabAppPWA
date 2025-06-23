@@ -3556,6 +3556,7 @@ export namespace Prisma {
     description: string | null
     phone: string | null
     last_updated_nppes: Date | null
+    npi_number: string | null
     website: string | null
     userId: number | null
   }
@@ -3567,6 +3568,7 @@ export namespace Prisma {
     description: string | null
     phone: string | null
     last_updated_nppes: Date | null
+    npi_number: string | null
     website: string | null
     userId: number | null
   }
@@ -3578,6 +3580,7 @@ export namespace Prisma {
     description: number
     phone: number
     last_updated_nppes: number
+    npi_number: number
     website: number
     userId: number
     _all: number
@@ -3601,6 +3604,7 @@ export namespace Prisma {
     description?: true
     phone?: true
     last_updated_nppes?: true
+    npi_number?: true
     website?: true
     userId?: true
   }
@@ -3612,6 +3616,7 @@ export namespace Prisma {
     description?: true
     phone?: true
     last_updated_nppes?: true
+    npi_number?: true
     website?: true
     userId?: true
   }
@@ -3623,6 +3628,7 @@ export namespace Prisma {
     description?: true
     phone?: true
     last_updated_nppes?: true
+    npi_number?: true
     website?: true
     userId?: true
     _all?: true
@@ -3721,6 +3727,7 @@ export namespace Prisma {
     description: string | null
     phone: string | null
     last_updated_nppes: Date | null
+    npi_number: string | null
     website: string | null
     userId: number | null
     _count: RehabCountAggregateOutputType | null
@@ -3751,6 +3758,7 @@ export namespace Prisma {
     description?: boolean
     phone?: boolean
     last_updated_nppes?: boolean
+    npi_number?: boolean
     website?: boolean
     userId?: boolean
     user?: boolean | Rehab$userArgs<ExtArgs>
@@ -3776,6 +3784,7 @@ export namespace Prisma {
     description?: boolean
     phone?: boolean
     last_updated_nppes?: boolean
+    npi_number?: boolean
     website?: boolean
     userId?: boolean
     user?: boolean | Rehab$userArgs<ExtArgs>
@@ -3788,6 +3797,7 @@ export namespace Prisma {
     description?: boolean
     phone?: boolean
     last_updated_nppes?: boolean
+    npi_number?: boolean
     website?: boolean
     userId?: boolean
   }
@@ -3836,6 +3846,7 @@ export namespace Prisma {
       description: string | null
       phone: string | null
       last_updated_nppes: Date | null
+      npi_number: string | null
       website: string | null
       userId: number | null
     }, ExtArgs["result"]["rehab"]>
@@ -4250,6 +4261,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Rehab", 'String'>
     readonly phone: FieldRef<"Rehab", 'String'>
     readonly last_updated_nppes: FieldRef<"Rehab", 'DateTime'>
+    readonly npi_number: FieldRef<"Rehab", 'String'>
     readonly website: FieldRef<"Rehab", 'String'>
     readonly userId: FieldRef<"Rehab", 'Int'>
   }
@@ -17197,6 +17209,7 @@ export namespace Prisma {
     description: 'description',
     phone: 'phone',
     last_updated_nppes: 'last_updated_nppes',
+    npi_number: 'npi_number',
     website: 'website',
     userId: 'userId'
   };
@@ -17462,6 +17475,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Rehab"> | string | null
     phone?: StringNullableFilter<"Rehab"> | string | null
     last_updated_nppes?: DateTimeNullableFilter<"Rehab"> | Date | string | null
+    npi_number?: StringNullableFilter<"Rehab"> | string | null
     website?: StringNullableFilter<"Rehab"> | string | null
     userId?: IntNullableFilter<"Rehab"> | number | null
     user?: XOR<UsersNullableRelationFilter, usersWhereInput> | null
@@ -17486,6 +17500,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     phone?: SortOrderInput | SortOrder
     last_updated_nppes?: SortOrderInput | SortOrder
+    npi_number?: SortOrderInput | SortOrder
     website?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
     user?: usersOrderByWithRelationInput
@@ -17513,6 +17528,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Rehab"> | string | null
     phone?: StringNullableFilter<"Rehab"> | string | null
     last_updated_nppes?: DateTimeNullableFilter<"Rehab"> | Date | string | null
+    npi_number?: StringNullableFilter<"Rehab"> | string | null
     website?: StringNullableFilter<"Rehab"> | string | null
     userId?: IntNullableFilter<"Rehab"> | number | null
     user?: XOR<UsersNullableRelationFilter, usersWhereInput> | null
@@ -17537,6 +17553,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     phone?: SortOrderInput | SortOrder
     last_updated_nppes?: SortOrderInput | SortOrder
+    npi_number?: SortOrderInput | SortOrder
     website?: SortOrderInput | SortOrder
     userId?: SortOrderInput | SortOrder
     _count?: RehabCountOrderByAggregateInput
@@ -17556,6 +17573,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Rehab"> | string | null
     phone?: StringNullableWithAggregatesFilter<"Rehab"> | string | null
     last_updated_nppes?: DateTimeNullableWithAggregatesFilter<"Rehab"> | Date | string | null
+    npi_number?: StringNullableWithAggregatesFilter<"Rehab"> | string | null
     website?: StringNullableWithAggregatesFilter<"Rehab"> | string | null
     userId?: IntNullableWithAggregatesFilter<"Rehab"> | number | null
   }
@@ -18205,6 +18223,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     user?: usersCreateNestedOneWithoutRehabsInput
     reviews?: ReviewCreateNestedManyWithoutRehabInput
@@ -18228,6 +18247,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
     reviews?: ReviewUncheckedCreateNestedManyWithoutRehabInput
@@ -18250,6 +18270,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     user?: usersUpdateOneWithoutRehabsNestedInput
     reviews?: ReviewUpdateManyWithoutRehabNestedInput
@@ -18273,6 +18294,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     reviews?: ReviewUncheckedUpdateManyWithoutRehabNestedInput
@@ -18296,6 +18318,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
   }
@@ -18306,6 +18329,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -18316,6 +18340,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -19125,6 +19150,7 @@ export namespace Prisma {
     description?: SortOrder
     phone?: SortOrder
     last_updated_nppes?: SortOrder
+    npi_number?: SortOrder
     website?: SortOrder
     userId?: SortOrder
   }
@@ -19141,6 +19167,7 @@ export namespace Prisma {
     description?: SortOrder
     phone?: SortOrder
     last_updated_nppes?: SortOrder
+    npi_number?: SortOrder
     website?: SortOrder
     userId?: SortOrder
   }
@@ -19152,6 +19179,7 @@ export namespace Prisma {
     description?: SortOrder
     phone?: SortOrder
     last_updated_nppes?: SortOrder
+    npi_number?: SortOrder
     website?: SortOrder
     userId?: SortOrder
   }
@@ -20806,6 +20834,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     reviews?: ReviewCreateNestedManyWithoutRehabInput
     amenities?: AmenityCreateNestedManyWithoutRehabsInput
@@ -20828,6 +20857,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     reviews?: ReviewUncheckedCreateNestedManyWithoutRehabInput
     amenities?: AmenityUncheckedCreateNestedManyWithoutRehabsInput
@@ -20904,6 +20934,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Rehab"> | string | null
     phone?: StringNullableFilter<"Rehab"> | string | null
     last_updated_nppes?: DateTimeNullableFilter<"Rehab"> | Date | string | null
+    npi_number?: StringNullableFilter<"Rehab"> | string | null
     website?: StringNullableFilter<"Rehab"> | string | null
     userId?: IntNullableFilter<"Rehab"> | number | null
   }
@@ -21439,6 +21470,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     user?: usersCreateNestedOneWithoutRehabsInput
     reviews?: ReviewCreateNestedManyWithoutRehabInput
@@ -21461,6 +21493,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
     reviews?: ReviewUncheckedCreateNestedManyWithoutRehabInput
@@ -21503,6 +21536,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     user?: usersCreateNestedOneWithoutRehabsInput
     reviews?: ReviewCreateNestedManyWithoutRehabInput
@@ -21525,6 +21559,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
     reviews?: ReviewUncheckedCreateNestedManyWithoutRehabInput
@@ -21567,6 +21602,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     user?: usersCreateNestedOneWithoutRehabsInput
     reviews?: ReviewCreateNestedManyWithoutRehabInput
@@ -21589,6 +21625,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
     reviews?: ReviewUncheckedCreateNestedManyWithoutRehabInput
@@ -21631,6 +21668,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     user?: usersCreateNestedOneWithoutRehabsInput
     reviews?: ReviewCreateNestedManyWithoutRehabInput
@@ -21653,6 +21691,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
     reviews?: ReviewUncheckedCreateNestedManyWithoutRehabInput
@@ -21695,6 +21734,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     user?: usersCreateNestedOneWithoutRehabsInput
     reviews?: ReviewCreateNestedManyWithoutRehabInput
@@ -21717,6 +21757,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
     reviews?: ReviewUncheckedCreateNestedManyWithoutRehabInput
@@ -21759,6 +21800,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     user?: usersCreateNestedOneWithoutRehabsInput
     reviews?: ReviewCreateNestedManyWithoutRehabInput
@@ -21781,6 +21823,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
     reviews?: ReviewUncheckedCreateNestedManyWithoutRehabInput
@@ -21823,6 +21866,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     user?: usersCreateNestedOneWithoutRehabsInput
     reviews?: ReviewCreateNestedManyWithoutRehabInput
@@ -21845,6 +21889,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
     reviews?: ReviewUncheckedCreateNestedManyWithoutRehabInput
@@ -21887,6 +21932,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     user?: usersCreateNestedOneWithoutRehabsInput
     reviews?: ReviewCreateNestedManyWithoutRehabInput
@@ -21909,6 +21955,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
     reviews?: ReviewUncheckedCreateNestedManyWithoutRehabInput
@@ -21951,6 +21998,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     user?: usersCreateNestedOneWithoutRehabsInput
     reviews?: ReviewCreateNestedManyWithoutRehabInput
@@ -21973,6 +22021,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
     reviews?: ReviewUncheckedCreateNestedManyWithoutRehabInput
@@ -22015,6 +22064,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     user?: usersCreateNestedOneWithoutRehabsInput
     reviews?: ReviewCreateNestedManyWithoutRehabInput
@@ -22037,6 +22087,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
     reviews?: ReviewUncheckedCreateNestedManyWithoutRehabInput
@@ -22079,6 +22130,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     user?: usersCreateNestedOneWithoutRehabsInput
     reviews?: ReviewCreateNestedManyWithoutRehabInput
@@ -22101,6 +22153,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
     reviews?: ReviewUncheckedCreateNestedManyWithoutRehabInput
@@ -22143,6 +22196,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     user?: usersCreateNestedOneWithoutRehabsInput
     amenities?: AmenityCreateNestedManyWithoutRehabsInput
@@ -22165,6 +22219,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
     userId?: number | null
     amenities?: AmenityUncheckedCreateNestedManyWithoutRehabsInput
@@ -22218,6 +22273,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     user?: usersUpdateOneWithoutRehabsNestedInput
     amenities?: AmenityUpdateManyWithoutRehabsNestedInput
@@ -22240,6 +22296,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     amenities?: AmenityUncheckedUpdateManyWithoutRehabsNestedInput
@@ -22284,6 +22341,7 @@ export namespace Prisma {
     description?: string | null
     phone?: string | null
     last_updated_nppes?: Date | string | null
+    npi_number?: string | null
     website?: string | null
   }
 
@@ -22301,6 +22359,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     reviews?: ReviewUpdateManyWithoutRehabNestedInput
     amenities?: AmenityUpdateManyWithoutRehabsNestedInput
@@ -22323,6 +22382,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     reviews?: ReviewUncheckedUpdateManyWithoutRehabNestedInput
     amenities?: AmenityUncheckedUpdateManyWithoutRehabsNestedInput
@@ -22345,6 +22405,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -22562,6 +22623,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     user?: usersUpdateOneWithoutRehabsNestedInput
     reviews?: ReviewUpdateManyWithoutRehabNestedInput
@@ -22584,6 +22646,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     reviews?: ReviewUncheckedUpdateManyWithoutRehabNestedInput
@@ -22606,6 +22669,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -22616,6 +22680,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     user?: usersUpdateOneWithoutRehabsNestedInput
     reviews?: ReviewUpdateManyWithoutRehabNestedInput
@@ -22638,6 +22703,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     reviews?: ReviewUncheckedUpdateManyWithoutRehabNestedInput
@@ -22660,6 +22726,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -22670,6 +22737,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     user?: usersUpdateOneWithoutRehabsNestedInput
     reviews?: ReviewUpdateManyWithoutRehabNestedInput
@@ -22692,6 +22760,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     reviews?: ReviewUncheckedUpdateManyWithoutRehabNestedInput
@@ -22714,6 +22783,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -22724,6 +22794,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     user?: usersUpdateOneWithoutRehabsNestedInput
     reviews?: ReviewUpdateManyWithoutRehabNestedInput
@@ -22746,6 +22817,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     reviews?: ReviewUncheckedUpdateManyWithoutRehabNestedInput
@@ -22768,6 +22840,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -22778,6 +22851,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     user?: usersUpdateOneWithoutRehabsNestedInput
     reviews?: ReviewUpdateManyWithoutRehabNestedInput
@@ -22800,6 +22874,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     reviews?: ReviewUncheckedUpdateManyWithoutRehabNestedInput
@@ -22822,6 +22897,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -22832,6 +22908,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     user?: usersUpdateOneWithoutRehabsNestedInput
     reviews?: ReviewUpdateManyWithoutRehabNestedInput
@@ -22854,6 +22931,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     reviews?: ReviewUncheckedUpdateManyWithoutRehabNestedInput
@@ -22876,6 +22954,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -22886,6 +22965,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     user?: usersUpdateOneWithoutRehabsNestedInput
     reviews?: ReviewUpdateManyWithoutRehabNestedInput
@@ -22908,6 +22988,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     reviews?: ReviewUncheckedUpdateManyWithoutRehabNestedInput
@@ -22930,6 +23011,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -22940,6 +23022,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     user?: usersUpdateOneWithoutRehabsNestedInput
     reviews?: ReviewUpdateManyWithoutRehabNestedInput
@@ -22962,6 +23045,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     reviews?: ReviewUncheckedUpdateManyWithoutRehabNestedInput
@@ -22984,6 +23068,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -22994,6 +23079,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     user?: usersUpdateOneWithoutRehabsNestedInput
     reviews?: ReviewUpdateManyWithoutRehabNestedInput
@@ -23016,6 +23102,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     reviews?: ReviewUncheckedUpdateManyWithoutRehabNestedInput
@@ -23038,6 +23125,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -23048,6 +23136,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     user?: usersUpdateOneWithoutRehabsNestedInput
     reviews?: ReviewUpdateManyWithoutRehabNestedInput
@@ -23070,6 +23159,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     reviews?: ReviewUncheckedUpdateManyWithoutRehabNestedInput
@@ -23092,6 +23182,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
@@ -23102,6 +23193,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     user?: usersUpdateOneWithoutRehabsNestedInput
     reviews?: ReviewUpdateManyWithoutRehabNestedInput
@@ -23124,6 +23216,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     reviews?: ReviewUncheckedUpdateManyWithoutRehabNestedInput
@@ -23146,6 +23239,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     last_updated_nppes?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    npi_number?: NullableStringFieldUpdateOperationsInput | string | null
     website?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }

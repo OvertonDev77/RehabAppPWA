@@ -32,7 +32,9 @@ export interface RehabFilterInput {
 export function useRehabs(filter: RehabFilterInput = {}) {
   const { loading, error, data } = useQuery(GET_REHABS, {
     variables: { filter },
-    fetchPolicy: "network-only",
+    fetchPolicy: "cache-and-network",
+    nextFetchPolicy: "cache-first",
+    notifyOnNetworkStatusChange: false,
   });
   return {
     loading,
@@ -42,57 +44,79 @@ export function useRehabs(filter: RehabFilterInput = {}) {
 }
 
 export function useAmenities() {
-  const { loading, error, data } = useQuery(GET_AMENITIES);
+  const { loading, error, data } = useQuery(GET_AMENITIES, {
+    fetchPolicy: "cache-first",
+  });
   return { loading, error, amenities: data?.amenities || [] };
 }
 
 export function useLevelsOfCare() {
-  const { loading, error, data } = useQuery(GET_LEVELS_OF_CARE);
+  const { loading, error, data } = useQuery(GET_LEVELS_OF_CARE, {
+    fetchPolicy: "cache-first",
+  });
   return { loading, error, levelsOfCare: data?.levelsOfCare || [] };
 }
 
 export function useConditions() {
-  const { loading, error, data } = useQuery(GET_CONDITIONS);
+  const { loading, error, data } = useQuery(GET_CONDITIONS, {
+    fetchPolicy: "cache-first",
+  });
   return { loading, error, conditions: data?.conditions || [] };
 }
 
 export function useTreatments() {
-  const { loading, error, data } = useQuery(GET_TREATMENTS);
+  const { loading, error, data } = useQuery(GET_TREATMENTS, {
+    fetchPolicy: "cache-first",
+  });
   return { loading, error, treatments: data?.treatments || [] };
 }
 
 export function useInsuranceProviders() {
-  const { loading, error, data } = useQuery(GET_INSURANCE_PROVIDERS);
+  const { loading, error, data } = useQuery(GET_INSURANCE_PROVIDERS, {
+    fetchPolicy: "cache-first",
+  });
   return { loading, error, insuranceProviders: data?.insuranceProviders || [] };
 }
 
 export function useClienteles() {
-  const { loading, error, data } = useQuery(GET_CLIENTELES);
+  const { loading, error, data } = useQuery(GET_CLIENTELES, {
+    fetchPolicy: "cache-first",
+  });
   return { loading, error, clienteles: data?.clienteles || [] };
 }
 
 export function useSettings() {
-  const { loading, error, data } = useQuery(GET_SETTINGS);
+  const { loading, error, data } = useQuery(GET_SETTINGS, {
+    fetchPolicy: "cache-first",
+  });
   return { loading, error, settings: data?.settings || [] };
 }
 
 export function useApproaches() {
-  const { loading, error, data } = useQuery(GET_APPROACHES);
+  const { loading, error, data } = useQuery(GET_APPROACHES, {
+    fetchPolicy: "cache-first",
+  });
   return { loading, error, approaches: data?.approaches || [] };
 }
 
 export function usePriceRanges() {
-  const { loading, error, data } = useQuery(GET_PRICE_RANGES);
+  const { loading, error, data } = useQuery(GET_PRICE_RANGES, {
+    fetchPolicy: "cache-first",
+  });
   return { loading, error, priceRanges: data?.priceRanges || [] };
 }
 
 export function useCountries() {
-  const { loading, error, data } = useQuery(GET_COUNTRIES);
+  const { loading, error, data } = useQuery(GET_COUNTRIES, {
+    fetchPolicy: "cache-first",
+  });
   return { loading, error, countries: data?.countries || [] };
 }
 
 export function useStates() {
-  const { loading, error, data } = useQuery(GET_STATES);
+  const { loading, error, data } = useQuery(GET_STATES, {
+    fetchPolicy: "cache-first",
+  });
   return { loading, error, states: data?.states || [] };
 }
 

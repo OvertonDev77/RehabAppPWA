@@ -1,7 +1,7 @@
 generator client {
   provider = "prisma-client-js" 
   output = "../prisma/generated"  
-  binaryTargets = ["native"] 
+  
   
 }
 
@@ -25,7 +25,8 @@ model Rehab {
   address            String?
   description        String? 
   phone              String?  
-  last_updated_nppes DateTime?  
+  last_updated_nppes DateTime?    
+  npi_number         String?  
   website            String?
   userId             Int?
   user               users?              @relation("UserRehabs", fields: [userId], references: [id])

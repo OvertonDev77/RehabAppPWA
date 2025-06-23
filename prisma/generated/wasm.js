@@ -134,6 +134,7 @@ exports.Prisma.RehabScalarFieldEnum = {
   description: 'description',
   phone: 'phone',
   last_updated_nppes: 'last_updated_nppes',
+  npi_number: 'npi_number',
   website: 'website',
   userId: 'userId'
 };

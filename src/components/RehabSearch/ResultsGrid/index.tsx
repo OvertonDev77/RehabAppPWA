@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, memo } from "react";
 import { useRehabSearch } from "../context/useRehabSearch";
 import { useRehabs } from "@/hooks/apolloHooks/rehabHooks";
 import RehabCard from "./RehabCard";
@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { useUserStateLocation } from "@/hooks/useUserStateLocation";
 
-const SkeletonCard = () => (
+const SkeletonCard = memo(() => (
   <Card className="w-full max-w-4xl mx-auto">
     <div className="aspect-[16/9] w-full mb-4">
       <Skeleton className="w-full h-48 rounded-xl" />
@@ -26,9 +26,11 @@ const SkeletonCard = () => (
       <Skeleton className="h-8 w-full rounded" />
     </div>
   </Card>
-);
+));
 
-const ResultsGrid: React.FC = () => {
+SkeletonCard.displayName = "SkeletonCard";
+
+const ResultsGrid: React.FC = memo(() => {
   const { selections } = useRehabSearch();
   const { rehabs, loading, error } = useRehabs(
     transformSelectionsToFilter(selections)
@@ -126,7 +128,9 @@ const ResultsGrid: React.FC = () => {
       </div>
     </Suspense>
   );
-};
+});
+
+ResultsGrid.displayName = "ResultsGrid";
 
 function transformSelectionsToFilter(selections: FilterSelections) {
   const filter: Record<string, string[]> = {};

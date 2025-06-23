@@ -23,6 +23,7 @@ model Rehab {
   description        String?
   phone              String?
   last_updated_nppes DateTime?
+  npi_number         String?
   website            String?
   userId             Int?
   user               users?              @relation("UserRehabs", fields: [userId], references: [id])

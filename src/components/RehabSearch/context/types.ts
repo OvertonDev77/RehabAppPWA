@@ -36,6 +36,7 @@ export interface RehabSearchContextType {
   };
   selectedRehabs: Rehab[] | [];
   setSelectedRehabs: React.Dispatch<React.SetStateAction<Rehab[]>>;
+  setSelectionsFromQueryObject: (queryObject: URLSearchParams) => void;
 }
 
 export const FILTER_STATE_TO_INPUT_KEY: Record<FilterCategoryKey, string> = {
