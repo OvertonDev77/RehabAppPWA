@@ -83,10 +83,9 @@ export const resolvers = {
             countries: true,
             states: true,
           },
-          take: 100,
         });
 
-        console.log("Results\n", result);
+        console.log("Results\n", Array.from(result).slice(0, 20));
         return result;
       } catch (error) {
         console.error("Prisma error:", error);
