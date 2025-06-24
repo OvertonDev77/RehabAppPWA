@@ -1,26 +1,17 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { User, ChevronDown, Heart } from "lucide-react";
+import { User, Heart, Search, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRehabSearchContext } from "./context/RehabSearchContext";
-import { FilterSelections, FilterCategoryKey } from "./context/types";
 import Image from "next/image";
 
-const CATEGORY_MAP = [
-  { label: "United States", key: "states" },
-  { label: "Amenities", key: "amenities" },
-  { label: "Settings", key: "settings" },
-  { label: "Levels Of Care", key: "levelsOfCare" },
-  { label: "Insurance", key: "insuranceProviders" },
-];
-
-// Helper: get fallback Unsplash images
-const getFallbackImages = (count = 3) =>
+// Helper: get fallback Unsplash images with medical/wellness themes
+const getFallbackImages = (count = 1) =>
   [
-    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
-    "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=800&q=80",
   ].slice(0, count);
 
 function getRehabImages(rehab: unknown): string[] {
@@ -35,184 +26,193 @@ function getRehabImages(rehab: unknown): string[] {
 }
 
 export default function AppNavbar() {
-  const { selections, setSelections, filterOptions, selectedRehabs } =
-    useRehabSearchContext();
-  const [isAddictionHovered, setIsAddictionHovered] = useState(false);
-  const [activeTab, setActiveTab] = useState<string | null>(null);
+  const { selectedRehabs } = useRehabSearchContext();
   const [showSelectedPopover, setShowSelectedPopover] = useState(false);
-
-  const handleSelection = (categoryKey: FilterCategoryKey, value: string) => {
-    const newSelections: FilterSelections = {
-      ...selections,
-      [categoryKey]: [value],
-    };
-    setSelections(newSelections);
-  };
-
-  const renderTabContent = () => {
-    const cat = CATEGORY_MAP.find((c) => c.label === activeTab);
-    if (!cat) return null;
-    const options = filterOptions[cat.key as keyof typeof filterOptions] || [];
-    return (
-      <div className="p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-80 overflow-y-auto">
-          {options.map((option: string) => (
-            <button
-              key={option}
-              onClick={() =>
-                handleSelection(cat.key as FilterCategoryKey, option)
-              }
-              className={`text-left p-2 rounded text-sm transition-colors ${
-                selections[cat.key as keyof typeof selections][0] === option
-                  ? "bg-blue-100 text-blue-700 font-semibold"
-                  : "hover:bg-gray-100"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div className="relative">
       {/* Navigation Bar */}
-      <nav className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
+      <nav className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40">
+        <div className="flex items-center justify-between max-w-7xl mx-auto px-6 py-4">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold text-blue-600">
-              The Rehab App
+            <Link
+              href="/"
+              className="flex items-center gap-3 text-2xl font-bold text-primary hover:text-primary/80 transition-colors"
+            >
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                <Home className="h-5 w-5 text-white" />
+              </div>
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Recovery Hub
+              </span>
             </Link>
           </div>
 
           {/* Centered Search Bar */}
-          <div className="flex-1 flex justify-center">
-            <div className="w-full max-w-md">
+          <div className="flex-1 flex justify-center max-w-lg mx-8">
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search recovery centers..."
-                className="pl-10 w-full"
-                // onChange={...} // search logic not implemented yet
+                placeholder="Search treatment centers, locations, or services..."
+                className="pl-10 w-full bg-gray-50 border-2 focus:bg-white transition-colors"
               />
             </div>
           </div>
 
           {/* Navigation Items */}
           <div className="flex items-center space-x-6">
-            <div
-              className="relative"
-              onMouseEnter={() => setIsAddictionHovered(true)}
-              onMouseLeave={() => {
-                setIsAddictionHovered(false);
-                setActiveTab(null);
-              }}
+            <Link
+              href="/admissions"
+              className="text-gray-700 hover:text-primary transition-colors font-medium"
             >
-              <button className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors">
-                <span>Addiction</span>
-                <ChevronDown className="h-4 w-4" />
-              </button>
+              Admissions
+            </Link>
 
-              {/* Dropdown Menu */}
-              {isAddictionHovered && (
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-screen max-w-6xl bg-white border border-gray-200 shadow-lg z-50 mt-2">
-                  <div className="px-6 py-6">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-6">
-                      Find Treatment By
-                    </h2>
-                    <div className="flex">
-                      {/* Vertical Tabs */}
-                      <div className="w-64 border-r border-gray-200 pr-6">
-                        <div className="space-y-2">
-                          {CATEGORY_MAP.map((tab) => (
-                            <button
-                              key={tab.label}
-                              onMouseEnter={() => setActiveTab(tab.label)}
-                              className={`block w-full text-left px-4 py-3 rounded-lg transition-colors ${
-                                activeTab === tab.label
-                                  ? "bg-blue-50 text-blue-600 border-l-4 border-blue-600"
-                                  : "text-gray-700 hover:bg-gray-50"
-                              }`}
-                            >
-                              {tab.label}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                      {/* Tab Content */}
-                      <div className="flex-1">{renderTabContent()}</div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
+            <Link
+              href="/aiPlayground"
+              className="text-gray-700 hover:text-primary transition-colors font-medium"
+            >
+              AI Assistant
+            </Link>
 
             <Link
               href="/resources"
-              className="text-gray-700 hover:text-blue-600 transition-colors"
+              className="text-gray-700 hover:text-primary transition-colors font-medium"
             >
               Resources
             </Link>
 
-            {/* Selected Rehabs Icon with Badge */}
+            {/* Selected Rehabs Icon with Enhanced Badge */}
             <div className="relative">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowSelectedPopover((v) => !v)}
-                aria-label="View selected rehabs"
+                aria-label={`View ${selectedRehabs.length} selected treatment centers`}
+                className="relative hover:bg-primary/10 transition-colors"
               >
                 <Heart
-                  className={
-                    selectedRehabs.length > 0 ? "text-red-500" : "text-gray-400"
-                  }
+                  className={`h-5 w-5 transition-all ${
+                    selectedRehabs.length > 0
+                      ? "text-red-500 fill-red-500 scale-110"
+                      : "text-gray-400 hover:text-red-400"
+                  }`}
                 />
                 {selectedRehabs.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs px-1.5 py-0.5">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs px-1.5 py-0.5 min-w-[20px] text-center font-bold animate-pulse">
                     {selectedRehabs.length}
                   </span>
                 )}
               </Button>
-              {/* Popover for selected rehabs */}
-              {showSelectedPopover && selectedRehabs.length > 0 && (
-                <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 shadow-lg rounded-lg z-50 p-4">
-                  <h4 className="font-semibold mb-2">Selected Rehabs</h4>
-                  <div className="space-y-2 max-h-64 overflow-y-auto">
-                    {selectedRehabs.map((rehab) => {
-                      const images = getRehabImages(rehab);
-                      return (
-                        <div
-                          key={rehab.id}
-                          className="flex items-center gap-3 p-2 border rounded"
-                        >
-                          <Image
-                            src={images[0]}
-                            alt={rehab.name || "Rehab"}
-                            className="w-12 h-12 object-cover rounded"
-                            width={48}
-                            height={48}
-                          />
-                          <div className="flex-1 min-w-0">
-                            <div className="font-medium text-sm truncate">
-                              {rehab.name}
-                            </div>
-                          </div>
+
+              {/* Enhanced Popover for selected rehabs */}
+              {showSelectedPopover && (
+                <div className="absolute right-0 mt-2 w-96 bg-white border-0 shadow-xl rounded-lg z-50 overflow-hidden">
+                  {selectedRehabs.length > 0 ? (
+                    <>
+                      <div className="bg-gradient-to-r from-primary/10 to-accent/10 p-4 border-b">
+                        <div className="flex items-center gap-2">
+                          <Heart className="h-5 w-5 text-red-500 fill-red-500" />
+                          <h4 className="font-bold text-lg text-primary">
+                            Your Favorites
+                          </h4>
+                          <span className="bg-primary/20 text-primary px-2 py-1 rounded-full text-xs font-bold">
+                            {selectedRehabs.length}
+                          </span>
                         </div>
-                      );
-                    })}
-                  </div>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Treatment centers you&apos;re considering
+                        </p>
+                      </div>
+                      <div className="max-h-80 overflow-y-auto">
+                        {selectedRehabs.map((rehab, index) => {
+                          const images = getRehabImages(rehab);
+                          return (
+                            <div
+                              key={rehab.id}
+                              className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors border-b last:border-b-0"
+                            >
+                              <div className="relative">
+                                <Image
+                                  src={images[0]}
+                                  alt={rehab.name || "Treatment center"}
+                                  className="w-16 h-16 object-cover rounded-lg shadow-sm"
+                                  width={64}
+                                  height={64}
+                                />
+                                <div className="absolute -top-1 -right-1 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                                  {index + 1}
+                                </div>
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="font-semibold text-sm text-gray-900 truncate">
+                                  {rehab.name}
+                                </div>
+                                <div className="text-xs text-muted-foreground truncate">
+                                  {rehab.address}
+                                </div>
+                                <div className="text-xs text-primary font-medium mt-1">
+                                  Ready to start admissions?
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div className="p-4 bg-gray-50 border-t">
+                        <Button className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
+                          Compare Selected Centers
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="p-6 text-center">
+                      <Heart className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                      <h4 className="font-semibold text-gray-900 mb-2">
+                        No favorites yet
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        Click the ♡ on treatment centers to save them here
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
 
-            <Button variant="ghost" size="icon">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:bg-primary/10 transition-colors"
+            >
               <User className="h-5 w-5" />
             </Button>
           </div>
         </div>
+
+        {/* Motivational Banner */}
+        <div className="bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5 px-6 py-2">
+          <div className="max-w-7xl mx-auto">
+            <p className="text-center text-sm text-muted-foreground">
+              <span className="font-medium text-primary">
+                🌟 Your recovery journey starts here.
+              </span>{" "}
+              Find the perfect treatment center that matches your needs and take
+              the first step towards healing.
+            </p>
+          </div>
+        </div>
       </nav>
+
+      {/* Click outside to close popover */}
+      {showSelectedPopover && (
+        <div
+          className="fixed inset-0 z-30"
+          onClick={() => setShowSelectedPopover(false)}
+        />
+      )}
     </div>
   );
 }

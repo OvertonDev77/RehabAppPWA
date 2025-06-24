@@ -7,10 +7,9 @@ import { FilterSelections } from "../context/types";
 import { Rehab, RehabFilterInput } from "@/hooks/apolloHooks/rehabHooks";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { useUserStateLocation } from "@/hooks/useUserStateLocation";
 
 const SkeletonCard = () => (
-  <Card className="w-full max-w-4xl mx-auto">
+  <Card className="w-full max-w-4xl mx-auto shadow-lg">
     <div className="aspect-[16/9] w-full mb-4">
       <Skeleton className="w-full h-48 rounded-xl" />
     </div>
@@ -27,6 +26,22 @@ const SkeletonCard = () => (
       <Skeleton className="h-8 w-full rounded" />
     </div>
   </Card>
+);
+
+const LoadingSidebar = () => (
+  <div className="w-1/4 min-w-[280px] sticky top-24 h-fit">
+    <Card className="shadow-lg border-0 bg-gradient-to-br from-primary/5 to-accent/5">
+      <CardContent className="flex flex-col items-center justify-center py-12">
+        <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+          <Skeleton className="w-8 h-8 rounded-full" />
+        </div>
+        <CardTitle className="mb-2 text-center">Start Your Journey</CardTitle>
+        <p className="text-muted-foreground text-center text-sm leading-relaxed">
+          Begin the admissions process for a selected rehab center.
+        </p>
+      </CardContent>
+    </Card>
+  </div>
 );
 
 // Utility to map selections to RehabFilterInput
@@ -72,103 +87,101 @@ function selectionsToFilterInput(
   return filterInput;
 }
 
-const ResultsGrid: React.FC<{ selections: FilterSelections }> = React.memo(
-  ({ selections }) => {
+interface ResultsGridProps {
+  selections: FilterSelections;
+  userState: string | null;
+  locationLoading: boolean;
+}
+
+const ResultsGrid: React.FC<ResultsGridProps> = React.memo(
+  ({ selections, userState, locationLoading }) => {
     const filterInput = selectionsToFilterInput(selections);
 
     console.log("ResultsGrid - selections:", selections);
     console.log("ResultsGrid - filterInput:", filterInput);
 
     const { rehabs, loading, error } = useRehabs(filterInput);
-    const { state: userState, loading: locationLoading } =
-      useUserStateLocation();
 
     console.log("ResultsGrid - rehabs count:", rehabs?.length);
 
     if (loading || locationLoading) {
       return (
-        <div className="flex flex-row justify-center gap-8">
-          <div className="grid grid-cols-1 gap-4 mt-8 w-3/5 max-w-4xl">
+        <div className="flex flex-row justify-center gap-8 mt-8">
+          <div className="grid grid-cols-1 gap-6 w-3/5 max-w-4xl">
             {Array.from({ length: 6 }).map((_, i) => (
               <SkeletonCard key={i} />
             ))}
           </div>
-          <div className="w-1/4 min-w-[250px] sticky top-24 h-fit">
-            <Card className="shadow-lg">
-              <CardContent className="flex flex-col items-center justify-center py-12">
-                <CardTitle className="mb-2">Start Admissions</CardTitle>
-                <p className="text-muted-foreground text-center">
-                  Begin the admissions process for a selected rehab here.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+          <LoadingSidebar />
         </div>
       );
     }
+
     if (error) return <div>Error loading rehabs: {error.message}</div>;
 
-    // Filter rehabs by user state if available and no filters have been applied
-    const noFiltersApplied = Object.values(selections).every(
-      (arr) => Array.isArray(arr) && arr.length === 0
-    );
-    let rehabsToShow = rehabs;
-    let showNearYou = false;
-    if (userState && noFiltersApplied) {
-      rehabsToShow = rehabs.filter(
-        (rehab: Rehab) =>
-          Array.isArray(rehab.states) &&
-          rehab.states.some(
-            (s) => s.name && s.name.toLowerCase() === userState.toLowerCase()
-          )
-      );
-      showNearYou = true;
-      // If no rehabs in state, fallback to all
-      if (rehabsToShow.length === 0) {
-        rehabsToShow = rehabs;
-        showNearYou = false;
-      }
-    }
+    // Check if we're showing location-based results
+    const showLocationHeader =
+      userState && selections.states.includes(userState);
 
     return (
       <Suspense
         fallback={
-          <div className="flex flex-row justify-center gap-8">
-            <div className="grid grid-cols-1 gap-4 mt-8 w-3/5 max-w-4xl">
+          <div className="flex flex-row justify-center gap-8 mt-8">
+            <div className="grid grid-cols-1 gap-6 w-3/5 max-w-4xl">
               {Array.from({ length: 6 }).map((_, i) => (
                 <SkeletonCard key={i} />
               ))}
             </div>
-            <div className="w-1/4 min-w-[250px] sticky top-24 h-fit">
-              <Card className="shadow-lg">
-                <CardContent className="flex flex-col items-center justify-center py-12">
-                  <CardTitle className="mb-2">Start Admissions</CardTitle>
-                  <p className="text-muted-foreground text-center">
-                    Begin the admissions process for a selected rehab here.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+            <LoadingSidebar />
           </div>
         }
       >
-        <div className="flex flex-row gap-8">
-          <div className="grid grid-cols-1 gap-4 mt-8 w-full">
-            {showNearYou && (
-              <h2 className="text-2xl font-bold mb-4">
-                Rehabs Near You ({userState})
-              </h2>
+        <div className="flex flex-row gap-8 mt-8">
+          <div className="grid grid-cols-1 gap-6 w-3/5 max-w-4xl">
+            {showLocationHeader && (
+              <div className="mb-6">
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                  Recovery Centers Near You
+                </h2>
+                <p className="text-lg text-muted-foreground">
+                  Showing treatment facilities in {userState}
+                </p>
+              </div>
             )}
-            {rehabsToShow.map((rehab: Rehab) => (
-              <RehabCard key={rehab.id} rehab={rehab} />
-            ))}
+            {rehabs.length === 0 ? (
+              <Card className="w-full p-8 text-center">
+                <CardContent className="py-8">
+                  <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl">🔍</span>
+                  </div>
+                  <CardTitle className="mb-2">No Results Found</CardTitle>
+                  <p className="text-muted-foreground">
+                    Try adjusting your filters to find more treatment options.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              rehabs.map((rehab: Rehab) => (
+                <RehabCard key={rehab.id} rehab={rehab} />
+              ))
+            )}
           </div>
-          <div className="w-1/4 min-w-[250px] sticky top-24 h-fit">
-            <Card className="shadow-lg">
-              <CardContent className="flex flex-col items-center justify-center py-12">
-                <CardTitle className="mb-2">Start Admissions</CardTitle>
-                <p className="text-muted-foreground text-center">
-                  Begin the admissions process for a selected rehab here.
+          <div className="w-1/4 min-w-[280px] sticky top-24 h-fit">
+            <Card className="shadow-lg border-0 bg-gradient-to-br from-primary/5 to-accent/5">
+              <CardContent className="flex flex-col items-center justify-center py-12 px-6">
+                <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+                  <span className="text-2xl">🌟</span>
+                </div>
+                <CardTitle className="mb-3 text-center text-xl">
+                  Ready to Begin?
+                </CardTitle>
+                <p className="text-muted-foreground text-center text-sm leading-relaxed mb-4">
+                  Take the first step towards recovery. Select a treatment
+                  center and start your admissions process.
+                </p>
+                <div className="w-full h-px bg-gradient-to-r from-transparent via-border to-transparent mb-4" />
+                <p className="text-xs text-center text-muted-foreground/80">
+                  💙 Your journey to wellness starts here
                 </p>
               </CardContent>
             </Card>
