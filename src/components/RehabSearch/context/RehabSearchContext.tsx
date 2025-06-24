@@ -1,11 +1,5 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useMemo,
-  useCallback,
-} from "react";
-import { RehabSearchContextType, FilterSelections } from "./types";
+import React, { createContext, useContext, useMemo, useCallback } from "react";
+import { FilterSelections } from "./types";
 import {
   useAmenities,
   useLevelsOfCare,
@@ -38,32 +32,22 @@ const defaultSelections: FilterSelections = {
   states: [],
 };
 
-const RehabSearchContext = createContext<RehabSearchContextType | undefined>(
-  undefined
-);
+const RehabSearchContext = createContext<
+  | {
+      filterOptions: Record<string, string[]>;
+      parseSelectionsFromQuery: (
+        queryObject: URLSearchParams
+      ) => FilterSelections;
+      selectedRehabs: Rehab[];
+      setSelectedRehabs: React.Dispatch<React.SetStateAction<Rehab[]>>;
+    }
+  | undefined
+>(undefined);
 
 export const RehabSearchProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [selections, setSelections] =
-    useState<FilterSelections>(defaultSelections);
-
-  const [selectedRehabs, setSelectedRehabs] = useState<Rehab[] | []>([]);
-
-  const setSelectionsFromQueryObject = useCallback(
-    (queryObject: URLSearchParams) => {
-      const newSelections = { ...defaultSelections };
-      queryObject.forEach((value, key) => {
-        if (key in defaultSelections) {
-          newSelections[key as keyof FilterSelections] = value
-            ? value.split(",")
-            : [];
-        }
-      });
-      setSelections(newSelections);
-    },
-    []
-  );
+  const [selectedRehabs, setSelectedRehabs] = React.useState<Rehab[] | []>([]);
 
   const { amenities } = useAmenities();
   const { levelsOfCare } = useLevelsOfCare();
@@ -76,6 +60,22 @@ export const RehabSearchProvider: React.FC<{ children: React.ReactNode }> = ({
   const { priceRanges } = usePriceRanges();
   const { countries } = useCountries();
   const { states } = useStates();
+
+  // Utility to parse URLSearchParams into FilterSelections
+  const parseSelectionsFromQuery = useCallback(
+    (queryObject: URLSearchParams): FilterSelections => {
+      const newSelections = { ...defaultSelections };
+      queryObject.forEach((value, key) => {
+        if (key in defaultSelections) {
+          newSelections[key as keyof FilterSelections] = value
+            ? value.split(",")
+            : [];
+        }
+      });
+      return newSelections;
+    },
+    []
+  );
 
   const filterOptions = useMemo(
     () => ({
@@ -108,21 +108,12 @@ export const RehabSearchProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const contextValue = useMemo(
     () => ({
-      selections,
-      setSelections,
-      setSelectionsFromQueryObject,
       filterOptions,
+      parseSelectionsFromQuery,
       selectedRehabs,
       setSelectedRehabs,
     }),
-    [
-      selections,
-      setSelections,
-      setSelectionsFromQueryObject,
-      filterOptions,
-      selectedRehabs,
-      setSelectedRehabs,
-    ]
+    [filterOptions, parseSelectionsFromQuery, selectedRehabs, setSelectedRehabs]
   );
 
   return (

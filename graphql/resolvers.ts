@@ -26,43 +26,46 @@ export const resolvers = {
       try {
         console.log("Rehab filter input:", filter);
         const where: any = {};
-        if (filter.amenityNames) {
+        if (filter.amenityNames && filter.amenityNames.length > 0) {
           where.amenities = { some: { name: { in: filter.amenityNames } } };
         }
-        if (filter.levelOfCareNames) {
+        if (filter.levelOfCareNames && filter.levelOfCareNames.length > 0) {
           where.levels_of_care = {
             some: { name: { in: filter.levelOfCareNames } },
           };
         }
-        if (filter.conditionNames) {
+        if (filter.conditionNames && filter.conditionNames.length > 0) {
           where.conditions = { some: { name: { in: filter.conditionNames } } };
         }
-        if (filter.treatmentNames) {
+        if (filter.treatmentNames && filter.treatmentNames.length > 0) {
           where.treatments = { some: { name: { in: filter.treatmentNames } } };
         }
-        if (filter.insuranceProviderNames) {
+        if (
+          filter.insuranceProviderNames &&
+          filter.insuranceProviderNames.length > 0
+        ) {
           where.insuranceProviders = {
             some: { name: { in: filter.insuranceProviderNames } },
           };
         }
-        if (filter.clienteleNames) {
+        if (filter.clienteleNames && filter.clienteleNames.length > 0) {
           where.clientele = { some: { name: { in: filter.clienteleNames } } };
         }
-        if (filter.settingNames) {
+        if (filter.settingNames && filter.settingNames.length > 0) {
           where.settings = { some: { name: { in: filter.settingNames } } };
         }
-        if (filter.approachNames) {
+        if (filter.approachNames && filter.approachNames.length > 0) {
           where.approaches = { some: { name: { in: filter.approachNames } } };
         }
-        if (filter.priceRangeLabels) {
+        if (filter.priceRangeLabels && filter.priceRangeLabels.length > 0) {
           where.priceRanges = {
             some: { label: { in: filter.priceRangeLabels } },
           };
         }
-        if (filter.countryNames) {
+        if (filter.countryNames && filter.countryNames.length > 0) {
           where.countries = { some: { name: { in: filter.countryNames } } };
         }
-        if (filter.stateNames) {
+        if (filter.stateNames && filter.stateNames.length > 0) {
           where.states = { some: { name: { in: filter.stateNames } } };
         }
         const result = await prisma.rehab.findMany({
@@ -80,7 +83,10 @@ export const resolvers = {
             countries: true,
             states: true,
           },
+          take: 100,
         });
+
+        console.log("Results\n", result);
         return result;
       } catch (error) {
         console.error("Prisma error:", error);

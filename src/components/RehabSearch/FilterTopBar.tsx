@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, memo, useCallback } from "react";
+import React, { useRef } from "react";
 import { ChevronLeft, ChevronRight, ChevronDown, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,7 +11,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { useRehabSearch } from "./context/useRehabSearch";
-import { FilterCategoryKey } from "./context/types";
+import { FilterCategoryKey, FilterSelections } from "./context/types";
 
 const formatCategoryName = (key: string): string => {
   return key
@@ -22,28 +22,26 @@ const formatCategoryName = (key: string): string => {
 
 const FilterTopBar: React.FC<{
   onSelectionChange: (category: FilterCategoryKey, value: string) => void;
-}> = memo(({ onSelectionChange }) => {
-  const { selections, filterOptions } = useRehabSearch();
+  selections: FilterSelections;
+}> = ({ onSelectionChange, selections }) => {
+  const { filterOptions } = useRehabSearch();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const scrollLeft = useCallback(() => {
+  const scrollLeft = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({ left: -200, behavior: "smooth" });
     }
-  }, []);
+  };
 
-  const scrollRight = useCallback(() => {
+  const scrollRight = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({ left: 200, behavior: "smooth" });
     }
-  }, []);
+  };
 
-  const getSelectedCount = useCallback(
-    (category: FilterCategoryKey): number => {
-      return selections[category].length;
-    },
-    [selections]
-  );
+  const getSelectedCount = (category: FilterCategoryKey): number => {
+    return selections[category].length;
+  };
 
   return (
     <div className="w-full max-w-6xl mx-auto p-6">
@@ -139,8 +137,6 @@ const FilterTopBar: React.FC<{
       </div>
     </div>
   );
-});
-
-FilterTopBar.displayName = "FilterTopBar";
+};
 
 export default FilterTopBar;
